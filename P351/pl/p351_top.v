@@ -19,6 +19,7 @@ module p351_top (
     output tfs_sck, tfs_mosi, tfs_le, input tfs_miso, tfs_ld,
     output [6:0] tfs_atten_ttl,
     output screen_uart_tx, input screen_uart_rx,
+    output dbg_uart_tx, input dbg_uart_rx,
     output rf_trx2_tx_nrx, rf_rx2_ntrx_rx,
     output clk_ref_select, clk_pll_sck, clk_pll_data, clk_pll_le,
     input clk_pll_lock, clk_ref_sample,
@@ -82,6 +83,7 @@ design_1_wrapper system (
     .spi_clk(spi_clk), .spi_csn(spi_csn), .spi_mosi(spi_mosi), .spi_miso(spi_miso),
     .tfs_sck(tfs_sck), .tfs_mosi(tfs_mosi), .tfs_le(tfs_le),
     .tfs_miso(tfs_miso), .tfs_ld(tfs_ld), .tfs_atten_ttl(raw_atten_ttl),
-    .screen_uart_tx(screen_uart_tx), .screen_uart_rx(screen_uart_rx)
+    .screen_uart_tx(screen_uart_tx), .screen_uart_rx(screen_uart_rx),
+    .dbg_uart_tx(dbg_uart_tx), .dbg_uart_rx(dbg_uart_rx)
 );
 endmodule

@@ -1,80 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenRun Id="impl_1" LaunchPart="xc7z035ffg900-2" LaunchTime="1792492305">
-  <File Type="BITSTR-BMM" Name="p351_top_bd.bmm"/>
-  <File Type="OPT-METHODOLOGY-DRC" Name="p351_top_methodology_drc_opted.rpt"/>
-  <File Type="INIT-TIMING" Name="p351_top_timing_summary_init.rpt"/>
   <File Type="ROUTE-PWR" Name="p351_top_power_routed.rpt"/>
   <File Type="PA-TCL" Name="p351_top.tcl"/>
-  <File Type="OPT-TIMING" Name="p351_top_timing_summary_opted.rpt"/>
-  <File Type="OPT-DCP" Name="p351_top_opt.dcp"/>
   <File Type="ROUTE-PWR-SUM" Name="p351_top_power_summary_routed.pb"/>
   <File Type="REPORTS-TCL" Name="p351_top_reports.tcl"/>
+  <File Type="BITSTR-MSK" Name="p351_top.msk"/>
+  <File Type="ROUTE-CLK" Name="p351_top_clock_utilization_routed.rpt"/>
+  <File Type="RDI-RDI" Name="p351_top.vdi"/>
+  <File Type="BG-BIT" Name="p351_top.bit"/>
+  <File Type="BG-DRC" Name="p351_top.drc"/>
+  <File Type="BG-BGN" Name="p351_top.bgn"/>
+  <File Type="BG-BIN" Name="p351_top.bin"/>
+  <File Type="BITSTR-RBT" Name="p351_top.rbt"/>
+  <File Type="BITSTR-NKY" Name="p351_top.nky"/>
+  <File Type="BITSTR-BMM" Name="p351_top_bd.bmm"/>
+  <File Type="BITSTR-MMI" Name="p351_top.mmi"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="p351_top_methodology_drc_routed.rpt"/>
+  <File Type="BITSTR-SYSDEF" Name="p351_top.sysdef"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="p351_top_methodology_drc_routed.pb"/>
+  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
+  <File Type="BITSTR-LTX" Name="p351_top.ltx"/>
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
   <File Type="OPT-DRC" Name="p351_top_drc_opted.rpt"/>
   <File Type="OPT-HWDEF" Name="p351_top.hwdef"/>
-  <File Type="PWROPT-DCP" Name="p351_top_pwropt.dcp"/>
-  <File Type="PWROPT-DRC" Name="p351_top_drc_pwropted.rpt"/>
-  <File Type="PWROPT-TIMING" Name="p351_top_timing_summary_pwropted.rpt"/>
-  <File Type="PLACE-DCP" Name="p351_top_placed.dcp"/>
   <File Type="PLACE-IO" Name="p351_top_io_placed.rpt"/>
-  <File Type="PLACE-CLK" Name="p351_top_clock_utilization_placed.rpt"/>
   <File Type="PLACE-UTIL" Name="p351_top_utilization_placed.rpt"/>
   <File Type="PLACE-UTIL-PB" Name="p351_top_utilization_placed.pb"/>
   <File Type="PLACE-CTRL" Name="p351_top_control_sets_placed.rpt"/>
-  <File Type="PLACE-SIMILARITY" Name="p351_top_incremental_reuse_placed.rpt"/>
   <File Type="PLACE-PRE-SIMILARITY" Name="p351_top_incremental_reuse_pre_placed.rpt"/>
-  <File Type="PLACE-TIMING" Name="p351_top_timing_summary_placed.rpt"/>
-  <File Type="POSTPLACE-PWROPT-DCP" Name="p351_top_postplace_pwropt.dcp"/>
-  <File Type="BG-BIN" Name="p351_top.bin"/>
-  <File Type="POSTPLACE-PWROPT-TIMING" Name="p351_top_timing_summary_postplace_pwropted.rpt"/>
-  <File Type="PHYSOPT-DCP" Name="p351_top_physopt.dcp"/>
-  <File Type="PHYSOPT-DRC" Name="p351_top_drc_physopted.rpt"/>
-  <File Type="BITSTR-MSK" Name="p351_top.msk"/>
-  <File Type="PHYSOPT-TIMING" Name="p351_top_timing_summary_physopted.rpt"/>
-  <File Type="ROUTE-ERROR-DCP" Name="p351_top_routed_error.dcp"/>
-  <File Type="ROUTE-DCP" Name="p351_top_routed.dcp"/>
-  <File Type="ROUTE-BLACKBOX-DCP" Name="p351_top_routed_bb.dcp"/>
   <File Type="ROUTE-DRC" Name="p351_top_drc_routed.rpt"/>
   <File Type="ROUTE-DRC-PB" Name="p351_top_drc_routed.pb"/>
-  <File Type="ROUTE-DRC-RPX" Name="p351_top_drc_routed.rpx"/>
-  <File Type="BITSTR-MMI" Name="p351_top.mmi"/>
-  <File Type="ROUTE-METHODOLOGY-DRC" Name="p351_top_methodology_drc_routed.rpt"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="p351_top_methodology_drc_routed.rpx"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="p351_top_methodology_drc_routed.pb"/>
   <File Type="ROUTE-PWR-RPX" Name="p351_top_power_routed.rpx"/>
   <File Type="ROUTE-STATUS" Name="p351_top_route_status.rpt"/>
   <File Type="ROUTE-STATUS-PB" Name="p351_top_route_status.pb"/>
+  <File Type="ROUTE-DCP" Name="p351_top_routed.dcp"/>
+  <File Type="ROUTE-ERROR-DCP" Name="p351_top_routed_error.dcp"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="p351_top_routed_bb.dcp"/>
   <File Type="ROUTE-TIMINGSUMMARY" Name="p351_top_timing_summary_routed.rpt"/>
   <File Type="ROUTE-TIMING-PB" Name="p351_top_timing_summary_routed.pb"/>
   <File Type="ROUTE-TIMING-RPX" Name="p351_top_timing_summary_routed.rpx"/>
-  <File Type="ROUTE-SIMILARITY" Name="p351_top_incremental_reuse_routed.rpt"/>
-  <File Type="ROUTE-CLK" Name="p351_top_clock_utilization_routed.rpt"/>
   <File Type="ROUTE-BUS-SKEW" Name="p351_top_bus_skew_routed.rpt"/>
   <File Type="ROUTE-BUS-SKEW-PB" Name="p351_top_bus_skew_routed.pb"/>
   <File Type="ROUTE-BUS-SKEW-RPX" Name="p351_top_bus_skew_routed.rpx"/>
+  <File Type="OPT-DCP" Name="p351_top_opt.dcp"/>
+  <File Type="PLACE-DCP" Name="p351_top_placed.dcp"/>
+  <File Type="PWROPT-DCP" Name="p351_top_pwropt.dcp"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="p351_top_postplace_pwropt.dcp"/>
+  <File Type="PHYSOPT-DCP" Name="p351_top_physopt.dcp"/>
   <File Type="POSTROUTE-PHYSOPT-DCP" Name="p351_top_postroute_physopt.dcp"/>
   <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="p351_top_postroute_physopt_bb.dcp"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="p351_top_timing_summary_postroute_physopted.rpt"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="p351_top_timing_summary_postroute_physopted.pb"/>
-  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="p351_top_timing_summary_postroute_physopted.rpx"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="p351_top_bus_skew_postroute_physopted.rpt"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="p351_top_bus_skew_postroute_physopted.pb"/>
-  <File Type="BG-BIT" Name="p351_top.bit"/>
-  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="p351_top_bus_skew_postroute_physopted.rpx"/>
-  <File Type="BITSTR-RBT" Name="p351_top.rbt"/>
-  <File Type="BITSTR-NKY" Name="p351_top.nky"/>
+  <File Type="ROUTE-DRC-RPX" Name="p351_top_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="p351_top_methodology_drc_routed.rpx"/>
   <File Type="PDI-FILE" Name="p351_top.pdi"/>
   <File Type="RCFI_FILE" Name="p351_top.rcfi"/>
   <File Type="CFI_FILE" Name="p351_top.cfi"/>
   <File Type="RNPI_FILE" Name="p351_top.rnpi"/>
   <File Type="NPI_FILE" Name="p351_top.npi"/>
   <File Type="RBD_FILE" Name="p351_top.rbd"/>
-  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
-  <File Type="BITSTR-LTX" Name="p351_top.ltx"/>
-  <File Type="BITSTR-SYSDEF" Name="p351_top.sysdef"/>
-  <File Type="BG-BGN" Name="p351_top.bgn"/>
-  <File Type="BG-DRC" Name="p351_top.drc"/>
-  <File Type="RDI-RDI" Name="p351_top.vdi"/>
-  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/bd/design_1/design_1.bd">
@@ -173,5 +155,6 @@
     <Step Id="route_design"/>
     <Step Id="post_route_phys_opt_design"/>
     <Step Id="write_bitstream" PreStepTclHook="$PPRDIR/../../hardware_release_guard.tcl"/>
+    <Step Id="write_device_image"/>
   </Strategy>
 </GenRun>
