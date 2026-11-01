@@ -1,3 +1,24 @@
 P351/pl（源码）(1).zip
 P351/output.zip
 P351/P351_AD9361TX(vivado工程).zip
+
+# ===== 自动化会话产物（2026-11）：体积大/可再生的中间产物不入库 =====
+.auto/sdboot/*.zip
+.auto/sdboot/gpcc/
+.auto/sdboot/embeddedsw/
+.auto/sdboot/tmpproj/
+.auto/sdboot/fsbl_sd/*.o
+.auto/sdboot/fsbl_sd/*.d
+.auto/sdboot/fsbl_sd/zynq_fsbl_bsp/ps7_cortexa9_0/libsrc/
+.auto/sdboot/fsbl_sd/zynq_fsbl_bsp/ps7_cortexa9_0/standalone_domain/
+.auto/plbuild/
+.auto/unpack/
+.auto/exe_r11/
+.auto/fork_backup_20261102/sdboot/
+.auto/.gen/
+.auto/.srcs/
+.auto/NA/
+.auto/hmiproj/
+__pycache__/
+*.o
+*.d
