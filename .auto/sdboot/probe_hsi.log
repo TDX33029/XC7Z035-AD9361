@@ -1,0 +1,25 @@
+
+****** Vivado v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:48:09 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source probe_hsi.tcl
+# lappend auto_path {C:/Xilinx/Vivado/2021.2/scripts/hsm}
+# package require hsi
+# puts "PROCS: [lsort [info procs hsi*]]"
+PROCS: 
+# puts "NS: [namespace children ::hsi]"
+NS: ::hsi::internal
+# puts "CMDS: [lsort [info commands hsi*]]"
+CMDS: 
+# if {![catch {set h [hsi::open_hw_design {D:/Document/tempPrj/XC7Z035-AD9361/.auto/sdboot/tmpproj/tmpbd.gen/sources_1/bd/design_1/hw_handoff/design_1.hwh}]} msg]} {
+#     puts "HWSW_OPEN_OK: $h"
+# } else {
+#     puts "OPEN_FAIL: $msg"
+# }
+INFO: [Hsi 55-2053] elapsed time for repository (C:/Xilinx/Vivado/2021.2/data/embeddedsw) loading 0 seconds
+hsi::open_hw_design: Time (s): cpu = 00:00:05 ; elapsed = 00:00:05 . Memory (MB): peak = 1266.098 ; gain = 0.000
+HWSW_OPEN_OK: design_1
+# exit
+INFO: [Common 17-206] Exiting Vivado at Mon Nov  2 00:58:49 2026...

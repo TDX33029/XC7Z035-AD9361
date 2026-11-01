@@ -1,0 +1,6 @@
+the_ROM_image:
+{
+	[bootloader] D:/Document/tempPrj/XC7Z035-AD9361/.auto/sdboot/fsbl_sd/fsbl.elf
+	D:/Document/tempPrj/XC7Z035-AD9361/P351/output/firmware/system.bit
+	D:/Document/tempPrj/XC7Z035-AD9361/.auto/sdboot/P351_APP_orig_lan.elf
+}

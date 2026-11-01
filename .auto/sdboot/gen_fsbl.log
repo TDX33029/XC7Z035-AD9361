@@ -1,0 +1,15 @@
+
+****** Vivado v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:48:09 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source gen_fsbl.tcl
+# lappend auto_path {C:/Xilinx/Vivado/2021.2/scripts/hsm}
+# package require hsi
+# hsi open_hw_design {D:/Document/tempPrj/XC7Z035-AD9361/.auto/sdboot/tmpproj/tmpbd.gen/sources_1/bd/design_1/hw_handoff/design_1.hwh}
+invalid command name "hsi"
+    while executing
+"hsi open_hw_design {D:/Document/tempPrj/XC7Z035-AD9361/.auto/sdboot/tmpproj/tmpbd.gen/sources_1/bd/design_1/hw_handoff/design_1.hwh}"
+    (file "gen_fsbl.tcl" line 3)
+INFO: [Common 17-206] Exiting Vivado at Sun Nov  1 22:07:42 2026...

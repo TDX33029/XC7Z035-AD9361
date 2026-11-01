@@ -1,0 +1,15 @@
+
+****** Vivado v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:48:09 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source probe2.tcl
+# lappend auto_path {C:/Xilinx/Vivado/2021.2/scripts/hsm}
+# package require hsi
+# puts "INTERNAL_PROCS: [lsort [info procs ::hsi::internal::*]]"
+INTERNAL_PROCS: 
+# puts "INTERNAL_CMDS: [lsort [info commands ::hsi::*]]"
+INTERNAL_CMDS: ::hsi::add_library ::hsi::close_hw_design ::hsi::close_sw_design ::hsi::create_comp_param ::hsi::create_dt_node ::hsi::create_dt_tree ::hsi::create_hw_design ::hsi::create_node ::hsi::create_sw_design ::hsi::current_dt_tree ::hsi::current_hw_design ::hsi::current_hw_instance ::hsi::current_sw_design ::hsi::delete_objs ::hsi::generate_app ::hsi::generate_bsp ::hsi::generate_target ::hsi::get_arrays ::hsi::get_cells ::hsi::get_comp_params ::hsi::get_drivers ::hsi::get_dt_nodes ::hsi::get_dt_trees ::hsi::get_fields ::hsi::get_hw_designs ::hsi::get_hw_files ::hsi::get_intf_nets ::hsi::get_intf_pins ::hsi::get_intf_ports ::hsi::get_libs ::hsi::get_mem_ranges ::hsi::get_nets ::hsi::get_nodes ::hsi::get_os ::hsi::get_pins ::hsi::get_ports ::hsi::get_registers ::hsi::get_sdts ::hsi::get_sw_cores ::hsi::get_sw_designs ::hsi::get_sw_interfaces ::hsi::get_sw_processor ::hsi::open_hw_design ::hsi::open_sw_design ::hsi::register_sdt ::hsi::set_repo_path ::hsi::write_hw_design ::hsi::write_mss ::hsi::write_ps_configuration
+# exit
+INFO: [Common 17-206] Exiting Vivado at Mon Nov  2 00:59:08 2026...
