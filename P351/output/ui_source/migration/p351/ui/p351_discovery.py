@@ -358,3 +358,61 @@ def choose_single(preferred_local="", previous_board=DEFAULT_BOARD, *, timeout=3
     if len(results) != 1:
         raise MultipleBoardsError(results)
     return results[0]
+
+
+def netcfg_reassign(board_ip, new_ip, mask="255.255.255.0", gateway="0.0.0.0", *,
+                    local_ip="", timeout=2.0):
+    """同网段工具：把板卡 IP 临时改为 new_ip 并在同一子网内确认固化。
+
+    帧：NCIP+nonce+ip+mask+gw（20B 载荷，单播到板卡当前 IP:40000）→ NCAK(nonce,result)
+    确认：NCCF+nonce（源=PC）→ NCCK。30 秒内必须 NCCF，否则板卡回滚原 IP。
+    跨网段使用需板卡固件放开广播 NCIP（待 Vitis，见交接文档 §18）。
+    """
+    import secrets as _secrets
+    nonce = _secrets.randbits(32)
+    ipb = bytes(int(x) for x in new_ip.split('.'))
+    mb = bytes(int(x) for x in mask.split('.'))
+    gb = bytes(int(x) for x in gateway.split('.'))
+    bind_ip = local_ip or board_ip  # 同网段场景下直接绑定本机接口地址
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.settimeout(0.4)
+    try:
+        payload = b"NCIP" + struct.pack('<I', nonce) + ipb + mb + gb
+        sock.sendto(payload, (board_ip, PORT))
+        ack = None
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline and ack is None:
+            try:
+                data, addr = sock.recvfrom(64)
+            except socket.timeout:
+                break
+            if len(data) >= 12 and data[:4] == b"NCAK" and struct.unpack('<I', data[4:8])[0] == nonce:
+                ack = (data[8] if len(data) >= 9 else 0, addr)
+        if ack is None:
+            raise DiscoveryError(f"NCFG 无应答：板卡 {board_ip} 未确认 trial IP {new_ip}。", ())
+        if ack[0] != 0:
+            raise DiscoveryError(f"NCFG 被拒绝（result={ack[0]}：1=参数/2=已有trial）。", ())
+        # 确认固化（板卡已切到 new_ip，同一子网可达）
+        time.sleep(0.1)
+        sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock2.settimeout(0.8)
+        try:
+            sock2.sendto(b"NCCF" + struct.pack('<I', nonce), (new_ip, PORT))
+            ck = None
+            deadline2 = time.monotonic() + 1.5
+            while time.monotonic() < deadline2 and ck is None:
+                try:
+                    data, addr = sock2.recvfrom(64)
+                except socket.timeout:
+                    break
+                if len(data) >= 12 and data[:4] == b"NCCK" and struct.unpack('<I', data[4:8])[0] == nonce:
+                    ck = data[8] if len(data) >= 9 else 1
+            if ck is None:
+                raise DiscoveryError("NCCF 确认无应答：板卡 30 秒后将回滚原 IP，请重试。", ())
+            if ck != 0:
+                raise DiscoveryError("NCCF 被拒绝（nonce/owner 不匹配）。", ())
+        finally:
+            sock2.close()
+        return True
+    finally:
+        sock.close()

@@ -53,7 +53,7 @@ def confirm_dialog(title,message,**kwargs):
     return original_askyesno(title,message,**kwargs)
 
 shared.messagebox.askyesno=confirm_dialog
-shared.UI_BUILD='P351 · 2026.10.20 r10 · 独立直发 / 整机最终RF测试'
+shared.UI_BUILD='P351 · 2026.11.01 r11 · 屏幕为主同步 / 自动发现 / 整机最终RF测试'
 tk,ttk=shared.tk,shared.ttk
 
 def attenuation_mdb(text):
@@ -105,8 +105,13 @@ class P351ControlUI(shared.ControlUI):
         self.valid_bits.set('2047');self.bit_rate_mbps.set('4')
         self._source_changed()
         self._update_power_summaries()
+        self.sync_hint=tk.StringVar(self,value='等待板卡…')
+        self.final_rf_state=None
+        self._auto_discover_quiet=False
+        self.system_panel.sync_label.configure(textvariable=self.sync_hint)
         self.after(100,self._poll_receiver_events)
         self.after(80,self._poll_p351_network)
+        self.after(1200,self._auto_discover)
         self.after(100,self._poll_final_rf)
         self.after(1000,self._final_rf_tick)
 
@@ -186,7 +191,8 @@ class P351ControlUI(shared.ControlUI):
 
     def test_connection(self):
         if not self._p351_network_idle():
-            self._log('地址测试未启动：请先停止I/Q监视并等待当前操作/只读查询完成。')
+            if not self._auto_discover_quiet:
+                self._log('地址测试未启动：请先停止I/Q监视并等待当前操作/只读查询完成。')
             return
         local=self.local_ip.get().strip()
         preferred=local if local!=self._p351_auto_local else ''
@@ -221,8 +227,9 @@ class P351ControlUI(shared.ControlUI):
             self._p351_invalidate_network()
             self._set_connection_status('error','地址/身份未确认')
             self.config_status.set(str(error or '没有有效P351回包；未采用默认地址'))
-            self._log('只读地址测试失败：'+self.config_status.get())
-            for detail in getattr(error,'diagnostics',()):self._log('查址详情：'+str(detail))
+            if not self._auto_discover_quiet:
+                self._log('只读地址测试失败：'+self.config_status.get())
+                for detail in getattr(error,'diagnostics',()):self._log('查址详情：'+str(detail))
             return
         # Entry虽在测试期间禁用，仍防止其他回调修改网口后套用旧结果。
         if self.local_ip.get().strip()!=request[3]:
@@ -285,6 +292,18 @@ class P351ControlUI(shared.ControlUI):
                 threading.Thread(target=worker,daemon=True).start()
         self.after(2000,self._temperature_tick)
 
+    def _auto_discover(self):
+        # 局域网自动发现：只读DSCI广播+CFGQ身份校验，失败静默重试，不打扰日志。
+        if self._p351_closing:
+            return
+        if not self.p351_network_confirmed and self._p351_network_idle():
+            self._auto_discover_quiet=True
+            try:
+                self.test_connection()
+            finally:
+                self._auto_discover_quiet=False
+        self.after(8000,self._auto_discover)
+
     def _endpoint(self):
         verified=self._p351_verified_endpoint
         if self._p351_allow_unconfirmed_stop and verified is not None:return verified
@@ -335,6 +354,7 @@ class P351ControlUI(shared.ControlUI):
                     self.final_rf_text.set('AD9361状态：不可用 / RF ?（'+error+'）；不沿用旧ON。')
                 else:
                     self.final_rf_updated=time.monotonic()
+                    self.final_rf_state=value
                     self.final_rf_text.set(value.pc_text())
         except queue.Empty:pass
         self.after(100,self._poll_final_rf)
