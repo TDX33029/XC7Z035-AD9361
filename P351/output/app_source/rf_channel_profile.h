@@ -1,0 +1,46 @@
+#ifndef RF_CHANNEL_PROFILE_H_
+#define RF_CHANNEL_PROFILE_H_
+
+/* P351物理射频通道：保持1R1T，AD9361内部用RX2A/TX2A。
+ * 对外接口是RX2和TRX2，板载开关另由p351_board.c负责。
+ * AD9361高层API的ch=0仍表示唯一逻辑通道，由驱动映射到物理通道2。
+ * 不能将API的ch改成1，也不能将PL数据改送第二组I/Q；那是2R2T的用法。
+ * UDP/屏幕/PL的第一配置槽位仍是唯一有效槽位，第二槽位必须关闭。
+ * P351本阶段仅实现通道2；改通道1必须同时实现对应板载射频开关。
+ */
+#ifndef RF_RX_PHYSICAL_CHANNEL
+#define RF_RX_PHYSICAL_CHANNEL 2U
+#endif
+#ifndef RF_TX_PHYSICAL_CHANNEL
+#define RF_TX_PHYSICAL_CHANNEL 2U
+#endif
+
+#if (RF_RX_PHYSICAL_CHANNEL != 1U && RF_RX_PHYSICAL_CHANNEL != 2U) || \
+    (RF_TX_PHYSICAL_CHANNEL != 1U && RF_TX_PHYSICAL_CHANNEL != 2U)
+#error "RF physical channel must be 1 or 2"
+#endif
+#if RF_RX_PHYSICAL_CHANNEL != RF_TX_PHYSICAL_CHANNEL
+#error "This 1R1T profile requires matching physical RX/TX channels"
+#endif
+
+#if RF_TX_PHYSICAL_CHANNEL == 2U
+#define RF_TX_QEC_STATUS_REG REG_QUAD_CAL_STATUS_TX2
+#define RF_TX_QEC_LO_CONV TX2_LO_CONV
+#define RF_TX_QEC_SSB_CONV TX2_SSB_CONV
+#define RF_TX_QEC_CORRECTION_REGS \
+    REG_TX2_OUT_1_PHASE_CORR, REG_TX2_OUT_1_GAIN_CORR, \
+    REG_TX2_OUT_1_OFFSET_I, REG_TX2_OUT_1_OFFSET_Q, \
+    REG_TX2_OUT_2_PHASE_CORR, REG_TX2_OUT_2_GAIN_CORR, \
+    REG_TX2_OUT_2_OFFSET_I, REG_TX2_OUT_2_OFFSET_Q
+#else
+#define RF_TX_QEC_STATUS_REG REG_QUAD_CAL_STATUS_TX1
+#define RF_TX_QEC_LO_CONV TX1_LO_CONV
+#define RF_TX_QEC_SSB_CONV TX1_SSB_CONV
+#define RF_TX_QEC_CORRECTION_REGS \
+    REG_TX1_OUT_1_PHASE_CORR, REG_TX1_OUT_1_GAIN_CORR, \
+    REG_TX1_OUT_1_OFFSET_I, REG_TX1_OUT_1_OFFSET_Q, \
+    REG_TX1_OUT_2_PHASE_CORR, REG_TX1_OUT_2_GAIN_CORR, \
+    REG_TX1_OUT_2_OFFSET_I, REG_TX1_OUT_2_OFFSET_Q
+#endif
+
+#endif

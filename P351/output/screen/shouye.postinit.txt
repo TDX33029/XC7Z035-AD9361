@@ -1,0 +1,9 @@
+vis 255,0
+paintpg=255
+paintedit=255
+paintpick=255
+oldrf=255
+tm0.tim=250
+tm0.en=1
+click p1,1
+sendme

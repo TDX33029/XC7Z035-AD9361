@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "hardware_tested": false,
+  "saved_events_match": true,
+  "native_compile_observed": true,
+  "target": "TJC4827T143_011R_P20 / 480x272",
+  "hmi": {
+    "bytes": 9426778,
+    "sha256": "2522fcd30b9d2b88d9c0f872146749196b2109a50f0918a26cd27f255653cd37"
+  },
+  "tft": {
+    "bytes": 2242756,
+    "sha256": "85abe516a41fb9484fdb5e643360fd9b0b1d82b44fa94525d43764027de2d205"
+  },
+  "events": {
+    "shouye.press.txt": {
+      "passed": true,
+      "sha256": "bce41f19dc7dd5d88b7edcfed13c3867631ae721fe10a5ad299b7542c0cf16f8",
+      "lines": 1681
+    },
+    "shouye.p1.press.txt": {
+      "passed": true,
+      "sha256": "58731c659dd7631bea7e27b2d9026b0291f6446742bb985df73173f5c0f2d065",
+      "lines": 1123
+    },
+    "shouye.t3.press.txt": {
+      "passed": true,
+      "sha256": "f4c12d6e7b4b25529c8c5b19d8662c8972872a696d1b32d75b65d9180defcdd5",
+      "lines": 253
+    },
+    "shouye.tm0.timer.txt": {
+      "passed": true,
+      "sha256": "bdbc233ecddd5ee8b61c8003600c1bcb62f8a6e888cba3d51984a735ab0a6cbd",
+      "lines": 210
+    },
+    "shouye.postinit.txt": {
+      "passed": true,
+      "sha256": "0bf853f5cc166df91f579d3dbee93591830dadd4360a1f485369739a83c317e7",
+      "lines": 9
+    }
+  },
+  "program_source_sha256": "ec338327560a509fcb5138d9c7548782eef7fc88aa075c27341219c9676ff114",
+  "compiler_output_bytes": 2242756,
+  "compiler_warnings": 1,
+  "global_ram_bytes": 1404,
+  "page0_ram_bytes": 1532,
+  "note": "事件由脚本逐项核对；原生编译输出需人工/编辑器实际观察，实屏与射频尚待联调。"
+}

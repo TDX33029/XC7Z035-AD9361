@@ -1,0 +1,132 @@
+C:/vivado20202/Vitis/2020.2/gnuwin/bin/make --no-print-directory pre-build
+a9-linaro-pre-build-step
+' '
+C:/vivado20202/Vitis/2020.2/gnuwin/bin/make --no-print-directory main-build
+'Building file: ../src/ad9361.c'
+'Building file: ../src/ad9361_api.c'
+'Building file: ../src/ad9361_conv.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/ad9361.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/ad9361.d" -MT"src/ad9361.o" -o "src/ad9361.o" "../src/ad9361.c"
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/ad9361_api.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/ad9361_api.d" -MT"src/ad9361_api.o" -o "src/ad9361_api.o" "../src/ad9361_api.c"
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/ad9361_conv.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/ad9361_conv.d" -MT"src/ad9361_conv.o" -o "src/ad9361_conv.o" "../src/ad9361_conv.c"
+'Building file: ../src/app_upload.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/app_upload.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/app_upload.d" -MT"src/app_upload.o" -o "src/app_upload.o" "../src/app_upload.c"
+'Finished building: ../src/ad9361_conv.c'
+' '
+'Finished building: ../src/app_upload.c'
+'Finished building: ../src/ad9361_api.c'
+'Building file: ../src/dma_rx.c'
+' '
+' '
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/dma_rx.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/dma_rx.d" -MT"src/dma_rx.o" -o "src/dma_rx.o" "../src/dma_rx.c"
+'Building file: ../src/dma_tx_bit.c'
+'Building file: ../src/eth_link.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/dma_tx_bit.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/dma_tx_bit.d" -MT"src/dma_tx_bit.o" -o "src/dma_tx_bit.o" "../src/dma_tx_bit.c"
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/eth_link.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/eth_link.d" -MT"src/eth_link.o" -o "src/eth_link.o" "../src/eth_link.c"
+In file included from ../src/dma_rx.c:25:
+C:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include/xtime_l.h:65:9: note: #pragma message: For the sleep routines, Global timer is being used
+   65 | #pragma message ("For the sleep routines, Global timer is being used")
+      |         ^~~~~~~
+In file included from ../src/dma_tx_bit.c:8:
+C:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include/xtime_l.h:65:9: note: #pragma message: For the sleep routines, Global timer is being used
+   65 | #pragma message ("For the sleep routines, Global timer is being used")
+      |         ^~~~~~~
+In file included from ../src/eth_link.c:26:
+C:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include/xtime_l.h:65:9: note: #pragma message: For the sleep routines, Global timer is being used
+   65 | #pragma message ("For the sleep routines, Global timer is being used")
+      |         ^~~~~~~
+'Finished building: ../src/ad9361.c'
+'Finished building: ../src/dma_rx.c'
+' '
+' '
+'Finished building: ../src/dma_tx_bit.c'
+'Building file: ../src/lvds_calibration.c'
+'Finished building: ../src/eth_link.c'
+' '
+'Invoking: ARM v7 gcc compiler'
+'Building file: ../src/main.c'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/lvds_calibration.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/lvds_calibration.d" -MT"src/lvds_calibration.o" -o "src/lvds_calibration.o" "../src/lvds_calibration.c"
+' '
+'Building file: ../src/p351_board.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+'Building file: ../src/p351_clock.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/p351_board.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/p351_board.d" -MT"src/p351_board.o" -o "src/p351_board.o" "../src/p351_board.c"
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/p351_clock.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/p351_clock.d" -MT"src/p351_clock.o" -o "src/p351_clock.o" "../src/p351_clock.c"
+In file included from ../src/main.c:45:
+C:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include/xtime_l.h:65:9: note: #pragma message: For the sleep routines, Global timer is being used
+   65 | #pragma message ("For the sleep routines, Global timer is being used")
+      |         ^~~~~~~
+In file included from ../src/p351_board.c:6:
+C:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include/xtime_l.h:65:9: note: #pragma message: For the sleep routines, Global timer is being used
+   65 | #pragma message ("For the sleep routines, Global timer is being used")
+      |         ^~~~~~~
+'Finished building: ../src/lvds_calibration.c'
+' '
+'Finished building: ../src/p351_board.c'
+'Building file: ../src/platform.c'
+'Finished building: ../src/p351_clock.c'
+' '
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/platform.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/platform.d" -MT"src/platform.o" -o "src/platform.o" "../src/platform.c"
+' '
+'Building file: ../src/rx_receiver.c'
+'Building file: ../src/screen_uart0.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/rx_receiver.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/rx_receiver.d" -MT"src/rx_receiver.o" -o "src/rx_receiver.o" "../src/rx_receiver.c"
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/screen_uart0.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/screen_uart0.d" -MT"src/screen_uart0.o" -o "src/screen_uart0.o" "../src/screen_uart0.c"
+In file included from ../src/platform.c:59:
+C:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include/xtime_l.h:65:9: note: #pragma message: For the sleep routines, Global timer is being used
+   65 | #pragma message ("For the sleep routines, Global timer is being used")
+      |         ^~~~~~~
+'Finished building: ../src/main.c'
+In file included from ../src/screen_uart0.c:23:
+C:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include/xtime_l.h:65:9: note: #pragma message: For the sleep routines, Global timer is being used
+   65 | #pragma message ("For the sleep routines, Global timer is being used")
+      |         ^~~~~~~
+' '
+'Building file: ../src/tx_bit_protocol.c'
+'Finished building: ../src/platform.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/tx_bit_protocol.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/tx_bit_protocol.d" -MT"src/tx_bit_protocol.o" -o "src/tx_bit_protocol.o" "../src/tx_bit_protocol.c"
+'Finished building: ../src/rx_receiver.c'
+' '
+' '
+'Building file: ../src/udp_stack.c'
+'Finished building: ../src/screen_uart0.c'
+'Building file: ../src/util.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/udp_stack.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/udp_stack.d" -MT"src/udp_stack.o" -o "src/udp_stack.o" "../src/udp_stack.c"
+' '
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/util.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1 -IC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include -MMD -MP -MF"src/util.d" -MT"src/util.o" -o "src/util.o" "../src/util.c"
+'Finished building: ../src/tx_bit_protocol.c'
+In file included from ../src/udp_stack.c:28:
+C:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include/xtime_l.h:65:9: note: #pragma message: For the sleep routines, Global timer is being used
+   65 | #pragma message ("For the sleep routines, Global timer is being used")
+      |         ^~~~~~~
+' '
+'Finished building: ../src/util.c'
+' '
+'Finished building: ../src/udp_stack.c'
+' '
+'Building target: P351_APP.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -LC:/Users/Jump/Desktop/AD9361TX/migration/p351/vitis_offline/P351_Vitis/export/P351_Vitis/sw/P351_Vitis/standalone_domain/bsplib/lib -o "P351_APP.elf"  ./src/ad9361.o ./src/ad9361_api.o ./src/ad9361_conv.o ./src/app_upload.o ./src/dma_rx.o ./src/dma_tx_bit.o ./src/eth_link.o ./src/lvds_calibration.o ./src/main.o ./src/p351_board.o ./src/p351_clock.o ./src/platform.o ./src/rx_receiver.o ./src/screen_uart0.o ./src/tx_bit_protocol.o ./src/udp_stack.o ./src/util.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: P351_APP.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size P351_APP.elf  |tee "P351_APP.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+ 393288	   5334	5089840	5488462	 53bf4e	P351_APP.elf
+'Finished building: P351_APP.elf.size'
+' '

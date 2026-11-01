@@ -1,0 +1,566 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Mon Aug 31 16:30:42 2026
+# Process ID: 21692
+# Current directory: C:/Users/Jump/Desktop/AD9361TX/repo/tx_bit_engine
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent11452 C:\Users\Jump\Desktop\AD9361TX\repo\tx_bit_engine\tx_bit_engine_ooc.dcp
+# Log file: C:/Users/Jump/Desktop/AD9361TX/repo/tx_bit_engine/vivado.log
+# Journal file: C:/Users/Jump/Desktop/AD9361TX/repo/tx_bit_engine\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_checkpoint C:/Users/Jump/Desktop/AD9361TX/repo/tx_bit_engine/tx_bit_engine_ooc.dcp
+Command: open_checkpoint C:/Users/Jump/Desktop/AD9361TX/repo/tx_bit_engine/tx_bit_engine_ooc.dcp
+
+Starting open_checkpoint Task
+
+Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.031 . Memory (MB): peak = 1139.773 ; gain = 0.000
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/vivado20202/Vivado/2020.2/data/ip'.
+INFO: [Device 21-403] Loading part xc7z020clg484-2
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.009 . Memory (MB): peak = 1345.824 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 102 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2020.2
+INFO: [Project 1-570] Preparing netlist for logic optimization
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1426.609 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+INFO: [Project 1-604] Checkpoint was created with Vivado v2020.2 (64-bit) build 3064766
+open_checkpoint: Time (s): cpu = 00:00:28 ; elapsed = 00:00:20 . Memory (MB): peak = 1631.844 ; gain = 492.070
+close_design
+open_project C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/dds_inc'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/tx_bit_engine'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/axi_lite_ctrl'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/ad9361_lvds'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/rx2r_pack'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/lvds_prbs_checker'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/vivado20202/Vivado/2020.2/data/ip'.
+open_project: Time (s): cpu = 00:00:10 ; elapsed = 00:00:11 . Memory (MB): peak = 2067.543 ; gain = 4.738
+update_compile_order -fileset sources_1
+open_hw_manager
+connect_hw_server -allow_non_jtag
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042
+INFO: [Labtools 27-3417] Launching cs_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+
+******** Xilinx cs_server v2020.2
+  ****** Build date   : Nov 04 2020-05:02:56
+    **** Build number : 2020.2.1604437376
+      ** Copyright 2017-2020 Xilinx, Inc. All Rights Reserved.
+
+
+
+connect_hw_server: Time (s): cpu = 00:00:00 ; elapsed = 00:00:07 . Memory (MB): peak = 2138.609 ; gain = 15.863
+open_hw_target
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210357A7D00EA
+open_hw_target: Time (s): cpu = 00:00:04 ; elapsed = 00:00:07 . Memory (MB): peak = 3685.402 ; gain = 1546.793
+set_property PROGRAM.FILE {C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/impl_1/ad936x_top.bit} [get_hw_devices xc7z020_1]
+set_property PROBES.FILE {C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/impl_1/ad936x_top.ltx} [get_hw_devices xc7z020_1]
+set_property FULL_PROBES.FILE {C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/impl_1/ad936x_top.ltx} [get_hw_devices xc7z020_1]
+current_hw_device [get_hw_devices xc7z020_1]
+refresh_hw_device [lindex [get_hw_devices xc7z020_1] 0]
+INFO: [Labtools 27-2302] Device xc7z020 (JTAG device index = 1) is programmed with a design that has 2 ILA core(s).
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Aug-31 17:12:43
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Aug-31 17:12:43
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_1.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Aug-31 17:14:31
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Aug-31 17:14:31
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_1.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:14:35
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:14:35
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:14:57
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:14:57
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:15:09
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:15:09
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:15:25
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:15:25
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:16:51
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:16:51
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:18:05
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:18:05
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:18:14
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:18:14
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\iladata6.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/iladata6.csv
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\iladata7.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/iladata7.csv
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:27:33
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:27:33
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\PCM_FM_5MBIT_RNRZ-L.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/PCM_FM_5MBIT_RNRZ-L.csv
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:32:20
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:32:20
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\NRZ_L.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/NRZ_L.csv
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:34:24
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:34:24
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\NRZ_M.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/NRZ_M.csv
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:42:46
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:42:46
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data {C:\Users\Jump\Desktop\NRZ_M.ila} hw_ila_data_2
+C:/Users/Jump/Desktop/NRZ_M.ila
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\NRZ_M.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/NRZ_M.csv
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:48:44
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:48:44
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\NRZ_S.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/NRZ_S.csv
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:49:48
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:49:48
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:50:07
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:50:07
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:50:31
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:50:31
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:51:00
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:51:00
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:51:13
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:51:13
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:51:31
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:51:31
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:51:44
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:51:44
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\BIO-L.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/BIO-L.csv
+ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210357A7D00EA
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210357A7D00EA
+WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
+INFO: [Labtools 27-1435] Device xc7z020 (JTAG device index = 1) is not programmed (DONE status = 0).
+WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
+refresh_hw_device [lindex [get_hw_devices xc7z020_1] 0]
+INFO: [Labtools 27-1435] Device xc7z020 (JTAG device index = 1) is not programmed (DONE status = 0).
+refresh_hw_device [lindex [get_hw_devices xc7z020_1] 0]
+INFO: [Labtools 27-2302] Device xc7z020 (JTAG device index = 1) is programmed with a design that has 2 ILA core(s).
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Aug-31 17:56:00
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Aug-31 17:56:00
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_1.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 17:56:03
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 17:56:03
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Aug-31 18:02:20
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Aug-31 18:02:20
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_1.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 18:02:22
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 18:02:22
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\10M.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/10M.csv
+ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210357A7D00EA
+close_hw_manager
+update_ip_catalog -rebuild -scan_changes
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/dds_inc'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/tx_bit_engine'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/axi_lite_ctrl'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/ad9361_lvds'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/rx2r_pack'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Jump/Desktop/AD9361TX/repo/lvds_prbs_checker'.
+report_ip_status -name ip_status
+WARNING: [BD 41-176] The physical port 'M_AXI_GP0_aximm_wr_socket' specified in the portmap, is not found on the block! 
+WARNING: [BD 41-176] The physical port 'M_AXI_GP0_aximm_rd_socket' specified in the portmap, is not found on the block! 
+INFO: [xilinx.com:ip:ila:6.2-6] /ila_0: Xilinx recommends using the System ILA IP in IP Integrator. The System ILA IP is functionally equivalent to an ILA and offers additional benefits in debugging interfaces both within IP Integrator and the Hardware Manager. Consult the Programming and Debug User Guide UG908 for further details.
+INFO: [xilinx.com:ip:ila:6.2-6] /ila_1: Xilinx recommends using the System ILA IP in IP Integrator. The System ILA IP is functionally equivalent to an ILA and offers additional benefits in debugging interfaces both within IP Integrator and the Hardware Manager. Consult the Programming and Debug User Guide UG908 for further details.
+report_ip_status: Time (s): cpu = 00:00:02 ; elapsed = 00:00:05 . Memory (MB): peak = 3920.227 ; gain = 0.000
+upgrade_ip -vlnv xilinx.com:user:dds_inc:1.10 [get_ips  design_1_dds_inc_0_0] -log ip_upgrade.log
+Reading block design file <C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/design_1.bd>...
+Adding component instance block -- xilinx.com:ip:proc_sys_reset:5.0 - proc_sys_reset_0
+Adding component instance block -- xilinx.com:ip:processing_system7:5.5 - processing_system7_0
+WARNING: [BD 41-176] The physical port 'M_AXI_GP0_aximm_wr_socket' specified in the portmap, is not found on the block! 
+WARNING: [BD 41-176] The physical port 'M_AXI_GP0_aximm_rd_socket' specified in the portmap, is not found on the block! 
+Adding component instance block -- xilinx.com:ip:axi_interconnect:2.1 - ps7_0_axi_periph
+Adding component instance block -- xilinx.com:ip:axi_crossbar:2.1 - xbar
+Adding component instance block -- xilinx.com:ip:axi_protocol_converter:2.1 - auto_pc
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_0
+Adding component instance block -- xilinx.com:ip:axis_data_fifo:2.0 - axis_data_fifo_0
+Adding component instance block -- xilinx.com:ip:axi_dma:7.1 - axi_dma_0
+Adding component instance block -- xilinx.com:ip:xlconcat:2.1 - xlconcat_0
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_1
+Adding component instance block -- xilinx.com:ip:axi_protocol_converter:2.1 - pc_1
+Adding component instance block -- xilinx.com:ip:axi_dma:7.1 - axi_dma_tx_0
+Adding component instance block -- xilinx.com:ip:axi_protocol_converter:2.1 - pc_tx_0
+Adding component instance block -- xilinx.com:ip:axis_data_fifo:2.0 - axis_data_fifo_tx_0
+Adding component instance block -- xilinx.com:ip:ila:6.2 - ila_0
+INFO: [xilinx.com:ip:ila:6.2-6] /ila_0: Xilinx recommends using the System ILA IP in IP Integrator. The System ILA IP is functionally equivalent to an ILA and offers additional benefits in debugging interfaces both within IP Integrator and the Hardware Manager. Consult the Programming and Debug User Guide UG908 for further details.
+Adding component instance block -- xilinx.com:user:rx2r_pack:1.0 - rx2r_pack_0
+Adding component instance block -- user.org:user:ad9361_lvds_phy:1.0 - ad9361_lvds_phy_0
+Adding component instance block -- user.org:user:lvds_prbs_checker:1.0 - lvds_prbs_checker_0
+Adding component instance block -- xilinx.com:ip:ila:6.2 - ila_1
+INFO: [xilinx.com:ip:ila:6.2-6] /ila_1: Xilinx recommends using the System ILA IP in IP Integrator. The System ILA IP is functionally equivalent to an ILA and offers additional benefits in debugging interfaces both within IP Integrator and the Hardware Manager. Consult the Programming and Debug User Guide UG908 for further details.
+Adding component instance block -- xilinx.com:ip:proc_sys_reset:5.0 - proc_sys_reset_pcm
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - pcm_reset_aux
+Adding component instance block -- xilinx.com:user:axi_lite_ctrl:1.3 - axi_lite_ctrl_0
+Adding component instance block -- user.org:user:tx_bit_engine:1.2 - tx_bit_engine_0
+Adding component instance block -- xilinx.com:user:dds_inc:1.10 - dds_inc_0
+Successfully read diagram <design_1> from block design file <C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/design_1.bd>
+Upgrading 'C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/design_1.bd'
+WARNING: [Vivado 12-1017] Problems encountered:
+1. Failed to delete one or more files in run directory C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/design_1_dds_inc_0_0_synth_1
+
+INFO: [IP_Flow 19-1972] Upgraded design_1_dds_inc_0_0 from IRIG-106 waveform source and unified selector 1.10 to IRIG-106 waveform source and unified selector 1.10
+Wrote  : <C:\Users\Jump\Desktop\AD9361TX\Z7sdrlite_noos_cmos.srcs\sources_1\bd\design_1\design_1.bd> 
+Wrote  : <C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/ui/bd_1f5defd0.ui> 
+INFO: [Coretcl 2-1525] Wrote upgrade log to 'C:/Users/Jump/Desktop/AD9361TX/ip_upgrade.log'.
+upgrade_ip: Time (s): cpu = 00:00:11 ; elapsed = 00:00:08 . Memory (MB): peak = 4088.375 ; gain = 168.148
+export_ip_user_files -of_objects [get_ips design_1_dds_inc_0_0] -no_script -sync -force -quiet
+open_hw_manager
+reset_run synth_1
+WARNING: [Vivado 12-1017] Problems encountered:
+1. Failed to delete one or more files in run directory C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/synth_1
+
+launch_runs impl_1 -to_step write_bitstream -jobs 16
+WARNING: [BD 41-702] Propagation TCL tries to overwrite USER strength parameter C_M_AXI_S2MM_DATA_WIDTH(64) on '/axi_dma_0' with propagated value(32). Command ignored
+WARNING: [BD 41-702] Propagation TCL tries to overwrite USER strength parameter C_M_AXI_S2MM_DATA_WIDTH(64) on '/axi_dma_0' with propagated value(32). Command ignored
+WARNING: [BD 41-702] Propagation TCL tries to overwrite USER strength parameter C_M_AXI_S2MM_DATA_WIDTH(64) on '/axi_dma_0' with propagated value(32). Command ignored
+WARNING: [BD 41-702] Propagation TCL tries to overwrite USER strength parameter C_M_AXI_S2MM_DATA_WIDTH(64) on '/axi_dma_0' with propagated value(32). Command ignored
+WARNING: [BD 41-702] Propagation TCL tries to overwrite USER strength parameter C_M_AXI_S2MM_DATA_WIDTH(64) on '/axi_dma_0' with propagated value(32). Command ignored
+WARNING: [BD 41-702] Propagation TCL tries to overwrite USER strength parameter C_M_AXI_S2MM_DATA_WIDTH(64) on '/axi_dma_0' with propagated value(32). Command ignored
+WARNING: [BD 41-702] Propagation TCL tries to overwrite USER strength parameter C_M_AXI_S2MM_DATA_WIDTH(64) on '/axi_dma_0' with propagated value(32). Command ignored
+WARNING: [#UNDEF] When using EMIO pins for SPI_0 tie SSIN High in the PL bitstream
+WARNING: [BD 41-927] Following properties on pin /rx2r_pack_0/rst have been updated from connected ip, but BD cell '/rx2r_pack_0' does not accept parameter changes, so they may not be synchronized with cell properties:
+	POLARITY = ACTIVE_HIGH 
+Please resolve any mismatches by directly setting properties on BD cell </rx2r_pack_0> to completely resolve these warnings.
+WARNING: [BD 41-927] Following properties on pin /lvds_prbs_checker_0/rst have been updated from connected ip, but BD cell '/lvds_prbs_checker_0' does not accept parameter changes, so they may not be synchronized with cell properties:
+	POLARITY = ACTIVE_HIGH 
+Please resolve any mismatches by directly setting properties on BD cell </lvds_prbs_checker_0> to completely resolve these warnings.
+Wrote  : <C:\Users\Jump\Desktop\AD9361TX\Z7sdrlite_noos_cmos.srcs\sources_1\bd\design_1\design_1.bd> 
+VHDL Output written to : C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/synth/design_1.v
+VHDL Output written to : C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/sim/design_1.v
+VHDL Output written to : C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/hdl/design_1_wrapper.v
+INFO: [BD 41-1029] Generation completed for the IP Integrator block dds_inc_0 .
+WARNING: [IP_Flow 19-4994] Overwriting existing constraint file 'c:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/ip/design_1_auto_pc_0/design_1_auto_pc_0_ooc.xdc'
+INFO: [BD 41-1029] Generation completed for the IP Integrator block ps7_0_axi_periph/s00_couplers/auto_pc .
+Exporting to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/hw_handoff/design_1.hwh
+Generated Block Design Tcl file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/hw_handoff/design_1_bd.tcl
+Generated Hardware Definition File C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.srcs/sources_1/bd/design_1/synth/design_1.hwdef
+[Mon Aug 31 20:19:51 2026] Launched design_1_dds_inc_0_0_synth_1, design_1_auto_pc_0_synth_1, synth_1...
+Run output will be captured here:
+design_1_dds_inc_0_0_synth_1: C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/design_1_dds_inc_0_0_synth_1/runme.log
+design_1_auto_pc_0_synth_1: C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/design_1_auto_pc_0_synth_1/runme.log
+synth_1: C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/synth_1/runme.log
+[Mon Aug 31 20:19:51 2026] Launched impl_1...
+Run output will be captured here: C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/impl_1/runme.log
+launch_runs: Time (s): cpu = 00:00:21 ; elapsed = 00:00:30 . Memory (MB): peak = 4097.926 ; gain = 9.551
+write_hw_platform -fixed -include_bit -force -file C:/Users/Jump/Desktop/AD9361TX/ad936x_top.xsa
+INFO: [Vivado 12-4895] Creating Hardware Platform: C:/Users/Jump/Desktop/AD9361TX/ad936x_top.xsa ...
+INFO: [Hsi 55-2053] elapsed time for repository (C:/vivado20202/Vivado/2020.2/data\embeddedsw) loading 0 seconds
+INFO: [Vivado 12-12467] The Hardware Platform can be used for Hardware
+INFO: [Vivado 12-4896] Successfully created Hardware Platform: C:/Users/Jump/Desktop/AD9361TX/ad936x_top.xsa
+write_hw_platform: Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 4307.031 ; gain = 209.105
+INFO: [Vivado 12-8231] Launching Vitis
+INFO: [Vivado 12-417] Running vitis
+INFO: [Vivado 12-8232] Vitis launch initiated. Please check console for any further messages.
+connect_hw_server -allow_non_jtag
+INFO: [Labtools 27-2285] Connecting to hw_server url TCP:localhost:3121
+INFO: [Labtools 27-3415] Connecting to cs_server url TCP:localhost:3042
+INFO: [Labtools 27-3417] Launching cs_server...
+INFO: [Labtools 27-2221] Launch Output:
+
+
+******** Xilinx cs_server v2020.2
+  ****** Build date   : Nov 04 2020-05:02:56
+    **** Build number : 2020.2.1604437376
+      ** Copyright 2017-2020 Xilinx, Inc. All Rights Reserved.
+
+
+
+connect_hw_server: Time (s): cpu = 00:00:01 ; elapsed = 00:00:08 . Memory (MB): peak = 4328.605 ; gain = 0.000
+open_hw_target
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210357A7D00EA
+set_property PROGRAM.FILE {C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/impl_1/ad936x_top.bit} [get_hw_devices xc7z020_1]
+set_property PROBES.FILE {C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/impl_1/ad936x_top.ltx} [get_hw_devices xc7z020_1]
+set_property FULL_PROBES.FILE {C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/impl_1/ad936x_top.ltx} [get_hw_devices xc7z020_1]
+current_hw_device [get_hw_devices xc7z020_1]
+refresh_hw_device [lindex [get_hw_devices xc7z020_1] 0]
+INFO: [Labtools 27-2302] Device xc7z020 (JTAG device index = 1) is programmed with a design that has 2 ILA core(s).
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Aug-31 20:34:15
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Aug-31 20:34:15
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_1.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:34:18
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:34:18
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\iladata.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/iladata.csv
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:35:12
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:35:12
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+undo
+INFO: [Common 17-17] undo 'set_property FULL_PROBES.FILE {C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.runs/impl_1/ad936x_top.ltx} [get_hw_devices xc7z020_1]'
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\iladata1.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/iladata1.csv
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:36:17
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:36:17
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\iladata3.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/iladata3.csv
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:36:51
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:36:51
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:37:16
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:37:16
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+write_hw_ila_data -csv_file {C:\Users\Jump\Desktop\iladat5a.csv} hw_ila_data_2
+C:/Users/Jump/Desktop/iladat5a.csv
+ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210357A7D00EA
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210357A7D00EA
+WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
+INFO: [Labtools 27-1435] Device xc7z020 (JTAG device index = 1) is not programmed (DONE status = 0).
+WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
+refresh_hw_device [lindex [get_hw_devices xc7z020_1] 0]
+INFO: [Labtools 27-2302] Device xc7z020 (JTAG device index = 1) is programmed with a design that has 2 ILA core(s).
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:46:55
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:46:55
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:47:16
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:47:16
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:47:28
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:47:28
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:47:57
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:47:57
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:49:42
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:49:42
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:55:31
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:55:31
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Aug-31 20:59:14
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Aug-31 20:59:14
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+ERROR: [Labtoolstcl 44-513] HW Target shutdown. Closing target: localhost:3121/xilinx_tcf/Digilent/210357A7D00EA
+INFO: [Labtoolstcl 44-466] Opening hw_target localhost:3121/xilinx_tcf/Digilent/210357A7D00EA
+WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
+INFO: [Labtools 27-1435] Device xc7z020 (JTAG device index = 1) is not programmed (DONE status = 0).
+WARNING: [Labtoolstcl 44-129] No matching hw_ila_data was found.
+refresh_hw_device [lindex [get_hw_devices xc7z020_1] 0]
+INFO: [Labtools 27-2302] Device xc7z020 (JTAG device index = 1) is programmed with a design that has 2 ILA core(s).
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_1 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+display_hw_ila_data [ get_hw_ila_data hw_ila_data_2 -of_objects [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:20:51
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:20:51
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:22:41
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:22:41
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:23:58
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:23:58
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Sep-01 00:24:05
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Sep-01 00:24:05
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_1.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:24:09
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:24:09
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:24:45
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:24:45
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:25:14
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:25:14
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:27:30
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:27:30
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_1' trigger was armed at 2026-Sep-01 00:27:35
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_0"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_1' triggered at 2026-Sep-01 00:27:35
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_1.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:27:38
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:27:38
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:28:10
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:28:10
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+run_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+INFO: [Labtools 27-1964] The ILA core 'hw_ila_2' trigger was armed at 2026-Sep-01 00:28:30
+wait_on_hw_ila [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]
+display_hw_ila_data [upload_hw_ila_data [get_hw_ilas -of_objects [get_hw_devices xc7z020_1] -filter {CELL_NAME=~"inst_design_1_wrapper/design_1_i/ila_1"}]]
+INFO: [Labtools 27-1966] The ILA core 'hw_ila_2' triggered at 2026-Sep-01 00:28:30
+INFO: [Labtools 27-3304] ILA Waveform data saved to file C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/backup/hw_ila_data_2.ila. Use Tcl command 'read_hw_ila_data' or Vivado File->Import->Import ILA Data menu item to import the previously saved data.
+save_wave_config {C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/hw_1/wave/hw_ila_data_2/hw_ila_data_2.wcfg}
+save_wave_config {C:/Users/Jump/Desktop/AD9361TX/Z7sdrlite_noos_cmos.hw/hw_1/wave/hw_ila_data_1/hw_ila_data_1.wcfg}
+exit
+INFO: [Common 17-206] Exiting Vivado at Tue Sep  1 00:28:57 2026...

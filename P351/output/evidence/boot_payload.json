@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "hardware_tested": false,
+  "hardware_programmed": false,
+  "boot_header_checksum_pass": true,
+  "boot_bytes": 13802640,
+  "partitions": [
+    {
+      "partition": 0,
+      "bytes": 65544,
+      "load": "0x0",
+      "entry": "0x0",
+      "header_checksum_pass": true,
+      "md5_present": false,
+      "md5_pass": null,
+      "elf_load_segments_exact_match": true,
+      "elf_load_segments_checked": 1
+    },
+    {
+      "partition": 1,
+      "bytes": 13321408,
+      "load": "0x0",
+      "entry": "0x0",
+      "header_checksum_pass": true,
+      "md5_present": true,
+      "md5_pass": true,
+      "bit_payload_exact_match": true
+    },
+    {
+      "partition": 2,
+      "bytes": 409616,
+      "load": "0x100000",
+      "entry": "0x100000",
+      "header_checksum_pass": true,
+      "md5_present": true,
+      "md5_pass": true,
+      "elf_load_segments_exact_match": true,
+      "elf_load_segments_checked": 1
+    }
+  ],
+  "boot_sha256": "f64da670c3d54524393cd9eb5f3009d973e3b29a9835fa6109db7ee6be807fe8"
+}

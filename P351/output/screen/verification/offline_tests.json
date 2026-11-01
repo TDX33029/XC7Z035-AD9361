@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "checks": 9832,
+  "parameter_cases": 897,
+  "hardware_tested": false,
+  "native_compilation_checked_by_this_test": false,
+  "tests": [
+    "four-page navigation",
+    "seven PCM codes",
+    "two modulation modes/no CW",
+    "final RF request distinct from fixed IF/no raw LO writes",
+    "HEX keypad and overflow",
+    "16..33-bit sync, frame capacity, positive payload",
+    "63B v6/op14 byte-exact CRC",
+    "query51B/STOP priority/pending/timeout/oldACK",
+    "uncalibrated/unlocked UI honesty",
+    "rev-last coherent shadow snapshot; partial writes cannot contaminate committed state",
+    "fresh RF ON/OFF/unknown and invalidation after APPLY/STOP/stale",
+    "final plan/model/estimate/fault rendering and exact target backfill",
+    "offline demo and PNG dimensions"
+  ]
+}

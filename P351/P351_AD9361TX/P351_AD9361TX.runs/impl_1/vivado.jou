@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Tue Oct 20 18:38:05 2026
+# Process ID: 13180
+# Current directory: C:/Users/Jump/Desktop/AD9361TX/migration/p351/vivado/P351_AD9361TX/P351_AD9361TX.runs/impl_1
+# Command line: vivado.exe -log p351_top.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source p351_top.tcl -notrace
+# Log file: C:/Users/Jump/Desktop/AD9361TX/migration/p351/vivado/P351_AD9361TX/P351_AD9361TX.runs/impl_1/p351_top.vdi
+# Journal file: C:/Users/Jump/Desktop/AD9361TX/migration/p351/vivado/P351_AD9361TX/P351_AD9361TX.runs/impl_1\vivado.jou
+#-----------------------------------------------------------
+source p351_top.tcl -notrace

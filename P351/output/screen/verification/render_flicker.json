@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "checks": 1035,
+  "random_framebuffer_cases": 480,
+  "user_hmi_sha256": "0d03193f77bc5ea2b3290caefdb5f269214bd889123e22b6c6101ceb98979757",
+  "protocol_events_byte_identical": false,
+  "power_protocol_upgrade": "dpo*500 mdBm",
+  "hardware_tested": false,
+  "native_compilation_checked_by_this_test": false,
+  "covers": [
+    "zero redraw on unchanged clicks/revisions",
+    "no cls after physical init",
+    "keypad digits redraw value only",
+    "page/overlay cleanup",
+    "STOP priority",
+    "single write RF header",
+    "pixel model equals same-version full redraw",
+    "no TFS/clock/RX controls",
+    "v5/op13 fixed IF screen protocol"
+  ]
+}

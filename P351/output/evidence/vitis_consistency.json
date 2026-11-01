@@ -1,0 +1,385 @@
+{
+  "hardware_tested": false,
+  "hardware_programmed": false,
+  "checks": {
+    "latest_application_sources_match": true,
+    "all_hardware_handoffs_match_release": true,
+    "all_xsa_embedded_bits_are_latest": true,
+    "platform_program_fpga_bit_is_latest": true,
+    "application_uses_new_p351_platform": true,
+    "debug_console_separate_from_screen": true,
+    "screen_uart0_and_tfs_present": true,
+    "header_default_rf_protection_retained": true,
+    "debug_manual_permission_explicit": true,
+    "release_does_not_inherit_manual_permission": true,
+    "auto_tx_off": true,
+    "calibration_empty": true,
+    "platform_recreation_targets_cortex_a9": true,
+    "elf_manual_permission_marker_matches_build": true,
+    "built_elf_console_uart1": true,
+    "correct_bsp_console_guard_compiles": true,
+    "uart0_console_regression_is_compile_blocked": true,
+    "gui_elf_matches_strict_build": true
+  },
+  "files": {
+    "vitis_offline\\P351_APP\\Debug\\P351_APP.elf": "50b85a5fd2fa742682e6c2bf2f387d62b155bd8a0960314a998077be3aae316f"
+  },
+  "source_files": [
+    {
+      "name": "ad9361.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "ad9361.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "ad9361_api.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "ad9361_api.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "ad9361_conv.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "app_upload.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "app_upload.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "board_config.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "boot_diagnostics.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "boot_pcm_fm_profile.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "common.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "config.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "dma_rx.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "dma_rx.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "dma_tx_bit.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "dma_tx_bit.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "eth_link.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "eth_link.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "final_rf_status.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "lscript.ld",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "lvds_calibration.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "lvds_calibration.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "main.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_board.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_board.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_clock.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_clock.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_clock_profile.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_if70_profile.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_tx_system.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_up70_calibration.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_up70_calibration_data.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "p351_upconverter70.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "parameters.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "platform.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "platform.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "platform_config.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "pn11_frame.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "rf_channel_profile.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "rx_receiver.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "rx_receiver.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "rx_receiver_profile.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "screen_controller.inc",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "screen_protocol.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "screen_uart0.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "screen_uart0.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "screen_up70_api.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "screen_up70_controller.inc",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "screen_v2.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "tfs_control.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "tx_bit_protocol.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "tx_bit_protocol.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "udp_stack.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "udp_stack.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "util.c",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "util.h",
+      "exists": true,
+      "text_matches": true
+    },
+    {
+      "name": "Xilinx.spec",
+      "exists": true,
+      "text_matches": true
+    }
+  ],
+  "hardware_comparison_xsa": "logs\\key_gaps_20261020\\p351_top_safety.xsa",
+  "hardware": [
+    {
+      "path": "vitis_offline\\p351_top.xsa",
+      "sha256": "8206406fde6f53151060e5fcf07efbc65dc252a56cdbdc0a8d1cd22c57741a85",
+      "module_parameters_match": true,
+      "memory_ranges_match": true,
+      "all_15_ps7_tables_match": true,
+      "embedded_bits": {
+        "p351_top_safety.bit": "bab39d8d4211fc8776568c633d09e3103c25fa6c0999900420c6567975892039"
+      }
+    },
+    {
+      "path": "vitis_offline\\P351_Vitis\\hw\\p351_top.xsa",
+      "sha256": "8206406fde6f53151060e5fcf07efbc65dc252a56cdbdc0a8d1cd22c57741a85",
+      "module_parameters_match": true,
+      "memory_ranges_match": true,
+      "all_15_ps7_tables_match": true,
+      "embedded_bits": {
+        "p351_top_safety.bit": "bab39d8d4211fc8776568c633d09e3103c25fa6c0999900420c6567975892039"
+      }
+    },
+    {
+      "path": "vitis_offline\\P351_Vitis\\export\\P351_Vitis\\hw\\p351_top.xsa",
+      "sha256": "8206406fde6f53151060e5fcf07efbc65dc252a56cdbdc0a8d1cd22c57741a85",
+      "module_parameters_match": true,
+      "memory_ranges_match": true,
+      "all_15_ps7_tables_match": true,
+      "embedded_bits": {
+        "p351_top_safety.bit": "bab39d8d4211fc8776568c633d09e3103c25fa6c0999900420c6567975892039"
+      }
+    }
+  ],
+  "bsp": [
+    {
+      "path": "ps7_cortexa9_0/standalone_domain/bsp/ps7_cortexa9_0/include/xparameters.h",
+      "stdin": "0xE0001000",
+      "stdout": "0xE0001000",
+      "uart0": "0xE0000000",
+      "uart1": "0xE0001000",
+      "tfs": "0x43C40000"
+    },
+    {
+      "path": "export/P351_Vitis/sw/P351_Vitis/standalone_domain/bspinclude/include/xparameters.h",
+      "stdin": "0xE0001000",
+      "stdout": "0xE0001000",
+      "uart0": "0xE0000000",
+      "uart1": "0xE0001000",
+      "tfs": "0x43C40000"
+    },
+    {
+      "path": "zynq_fsbl/zynq_fsbl_bsp/ps7_cortexa9_0/include/xparameters.h",
+      "stdin": "0xE0001000",
+      "stdout": "0xE0001000",
+      "uart0": "0xE0000000",
+      "uart1": "0xE0001000",
+      "tfs": "0x43C40000"
+    }
+  ],
+  "manual_rf_debug_expected": true,
+  "hardware_acceptance_established": false,
+  "elf_stdout_baseaddress": "0xe0001000",
+  "independent_strict_elf": "ps\\build_key_gaps_manual_20261020\\P351_MANUAL_RF_TEST.elf",
+  "independent_strict_build_matches": {
+    ".text": true,
+    ".data": true,
+    ".ARM.exidx": true,
+    ".ARM.extab": true,
+    ".rodata_except_stamp": true
+  },
+  "passed": true
+}

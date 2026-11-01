@@ -1,0 +1,1028 @@
+{
+    "ltx_root": {
+        "version": 4,
+        "minor": 0,
+        "ltx_data": [
+            {
+                "name": "EDA_PROBESET",
+                "active": true,
+                "debug_cores": [
+                    {
+                        "type": "XSDB_V3",
+                        "name": "dbg_hub",
+                        "spec": "labtools_xsdbm_v3",
+                        "clk_input_freq_hz": "122880320"
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "system/design_1_i/ila_1",
+                        "spec": "labtools_ila_v6",
+                        "ipName": "ila",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 0,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "BDDDE336956751C2B9891671ED3068A3",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 0,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_bit_data",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 1,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_bit_valid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 2,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_frame_start",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe3",
+                                "id": 3,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 3,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_frame_end",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe4",
+                                "id": 4,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 4,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_busy",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe5",
+                                "id": 5,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 5,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_done",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe6",
+                                "id": 6,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 6,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_underrun",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe7",
+                                "id": 7,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 7,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_error",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe8",
+                                "id": 8,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 8,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_bits_sent",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[31]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[30]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[29]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[28]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[27]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[26]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[25]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[24]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[23]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[22]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[21]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[20]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[19]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[18]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[17]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[16]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[15]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[14]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[13]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[12]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bits_sent[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe9",
+                                "id": 9,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 9,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/dds_inc_0_bit_ready",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe10",
+                                "id": 10,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 10,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/dds_inc_0_pcm_iq_valid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe11",
+                                "id": 11,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 11,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[31]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[30]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[29]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[28]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[27]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[26]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[25]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[24]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[23]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[22]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[21]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[20]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[19]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[18]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[17]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[16]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[15]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[14]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[13]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[12]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_accepted_bits[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe12",
+                                "id": 12,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 12,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[15]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[14]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[13]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[12]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_nrz[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe13",
+                                "id": 13,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 15,
+                                "portIndex": 13,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/dds_inc_0_pcm_debug_filter",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[15]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[14]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[13]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[12]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_filter[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe14",
+                                "id": 14,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 14,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/dds_inc_0_pcm_debug_phase",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[31]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[30]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[29]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[28]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[27]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[26]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[25]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[24]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[23]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[22]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[21]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[20]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[19]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[18]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[17]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[16]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[15]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[14]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[13]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[12]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_pcm_debug_phase[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe15",
+                                "id": 15,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 11,
+                                "portIndex": 15,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/dds_inc_0_dac_data_i0",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_i0[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe16",
+                                "id": 16,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 11,
+                                "portIndex": 16,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/dds_inc_0_dac_data_q0",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/dds_inc_0_dac_data_q0[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe17",
+                                "id": 17,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 31,
+                                "portIndex": 17,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/tx_bit_engine_0_bit_phase",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[31]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[30]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[29]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[28]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[27]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[26]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[25]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[24]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[23]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[22]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[21]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[20]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[19]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[18]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[17]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[16]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[15]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[14]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[13]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[12]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/tx_bit_engine_0_bit_phase[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "type": "ILA_V3",
+                        "name": "system/design_1_i/ila_rx1",
+                        "spec": "labtools_ila_v6",
+                        "ipName": "ila",
+                        "core_location": {
+                            "user_chain": 1,
+                            "slave_index": 1,
+                            "bscan_switch_index": 0
+                        },
+                        "uuid": "995126E8C76954069882DEC337A9897A",
+                        "pins": [
+                            {
+                                "name": "probe0",
+                                "id": 18,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": false,
+                                "leftIndex": 0,
+                                "rightIndex": 0,
+                                "portIndex": 0,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/ad9363_phy_0_adc_valid",
+                                        "isBus": false
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe1",
+                                "id": 19,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 11,
+                                "portIndex": 1,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/ad9363_phy_0_adc_data_i0",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_i0[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "probe2",
+                                "id": 20,
+                                "type": "DATA_TRIGGER",
+                                "direction": "IN",
+                                "isVector": true,
+                                "leftIndex": 0,
+                                "rightIndex": 11,
+                                "portIndex": 2,
+                                "nets": [
+                                    {
+                                        "name": "system/design_1_i/ad9363_phy_0_adc_data_q0",
+                                        "isBus": true,
+                                        "subnets": [
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[11]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[10]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[9]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[8]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[7]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[6]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[5]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[4]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[3]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[2]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[1]"
+                                            },
+                                            {
+                                                "name": "system/design_1_i/ad9363_phy_0_adc_data_q0[0]"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

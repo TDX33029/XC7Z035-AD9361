@@ -1,0 +1,6 @@
+the_ROM_image:
+{
+ [bootloader] fsbl.elf
+ [checksum=md5] system.bit
+ [checksum=md5] P351_OFFLINE_CANDIDATE.elf
+}

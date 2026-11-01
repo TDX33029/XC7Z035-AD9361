@@ -1,0 +1,32 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Jump/Desktop/AD9361TX/migration/p351/pl/p351_rf_safety.v" into library work
+INFO: [VRFC 10-311] analyzing module p351_rf_safety
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/Jump/Desktop/AD9361TX/migration/p351/tests/tb_p351_rf_safety.v" into library work
+INFO: [VRFC 10-311] analyzing module tb_p351_rf_safety
+Vivado Simulator 2020.2
+Copyright 1986-1999, 2001-2020 Xilinx, Inc. All Rights Reserved.
+Running: C:/vivado20202/Vivado/2020.2/bin/unwrapped/win64.o/xelab.exe tb_p351_rf_safety -s safety_sim 
+Multi-threading is on. Using 14 slave threads.
+Starting static elaboration
+Pass Through NonSizing Optimizer
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module work.p351_rf_safety(TIMEOUT_CYCLES=32...
+Compiling module work.tb_p351_rf_safety
+Built simulation snapshot safety_sim
+
+****** xsim v2020.2 (64-bit)
+  **** SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+  **** IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+    ** Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/safety_sim/xsim_script.tcl
+# xsim {safety_sim} -autoloadwcfg -runall
+Vivado Simulator 2020.2
+Time resolution is 1 ps
+run -all
+PASS 47 PL watchdog/CPU-hang/LD/reference/reset/explicit-rearm assertions
+$finish called at time : 4826 ns : File "C:/Users/Jump/Desktop/AD9361TX/migration/p351/tests/tb_p351_rf_safety.v" Line 31
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Oct 20 19:03:18 2026...

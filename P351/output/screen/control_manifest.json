@@ -1,0 +1,499 @@
+{
+  "device": "TJC4827T143_011R_P20",
+  "width": 480,
+  "height": 272,
+  "baud": 115200,
+  "native_architecture": "shouye四逻辑页画布；p1绘图，t3发送，tm0=250ms",
+  "pages": [
+    [
+      [
+        "field",
+        "df",
+        "发射频率：",
+        12,
+        38,
+        260,
+        44
+      ],
+      [
+        "field",
+        "dpo",
+        "发射功率：",
+        280,
+        38,
+        188,
+        44
+      ],
+      [
+        "group",
+        "dm",
+        "调制方式",
+        12,
+        85,
+        456,
+        52
+      ],
+      [
+        "field",
+        "dr",
+        "码率 / bit/s",
+        12,
+        147,
+        220,
+        38
+      ],
+      [
+        "text",
+        "pn",
+        "数据源  PN11",
+        254,
+        156,
+        214,
+        24
+      ],
+      [
+        "button",
+        "applytx",
+        "应用并发射",
+        12,
+        192,
+        286,
+        28
+      ],
+      [
+        "button",
+        "readtx",
+        "读取板端设置",
+        306,
+        192,
+        162,
+        28
+      ]
+    ],
+    [
+      [
+        "choice",
+        "dc",
+        "PCM 码型",
+        12,
+        40,
+        456,
+        42
+      ],
+      [
+        "group",
+        "dfr",
+        "帧同步",
+        12,
+        88,
+        220,
+        50
+      ],
+      [
+        "group",
+        "di",
+        "重复方式",
+        240,
+        88,
+        228,
+        50
+      ],
+      [
+        "field",
+        "db",
+        "小帧 / byte",
+        12,
+        146,
+        220,
+        38
+      ],
+      [
+        "field",
+        "dn",
+        "复帧小帧数",
+        240,
+        146,
+        228,
+        38
+      ],
+      [
+        "text",
+        "pn",
+        "PN11 / 7FF / 2047 bit",
+        12,
+        196,
+        286,
+        20
+      ],
+      [
+        "button",
+        "navsync",
+        "同步字设置",
+        306,
+        192,
+        162,
+        28
+      ]
+    ],
+    [
+      [
+        "field",
+        "dsl",
+        "同步字低16位 / HEX",
+        12,
+        40,
+        220,
+        46
+      ],
+      [
+        "field",
+        "dsh",
+        "同步字高16位 / HEX",
+        240,
+        40,
+        228,
+        46
+      ],
+      [
+        "field",
+        "dsb",
+        "同步字长度 / bit",
+        12,
+        100,
+        220,
+        42
+      ],
+      [
+        "group",
+        "dsx",
+        "第33位",
+        240,
+        94,
+        228,
+        50
+      ],
+      [
+        "summary",
+        "sync",
+        "",
+        12,
+        153,
+        456,
+        22
+      ],
+      [
+        "button",
+        "checkframe",
+        "检查同步字与帧容量",
+        12,
+        192,
+        456,
+        28
+      ]
+    ],
+    [
+      [
+        "actual",
+        "tx",
+        "",
+        12,
+        40,
+        456,
+        27
+      ],
+      [
+        "actual",
+        "power",
+        "",
+        12,
+        76,
+        456,
+        27
+      ],
+      [
+        "actual",
+        "reference",
+        "",
+        12,
+        112,
+        456,
+        27
+      ],
+      [
+        "actual",
+        "source",
+        "",
+        12,
+        148,
+        456,
+        27
+      ],
+      [
+        "actual",
+        "temp",
+        "",
+        12,
+        190,
+        286,
+        27
+      ],
+      [
+        "button",
+        "queryst",
+        "刷新状态",
+        306,
+        190,
+        162,
+        30
+      ]
+    ]
+  ],
+  "draft_defaults": {
+    "dm": 0,
+    "dr": 4000000,
+    "dc": 0,
+    "dfr": 1,
+    "db": 512,
+    "dn": 1,
+    "di": 1,
+    "dsl": 10304,
+    "dsh": 65131,
+    "dsx": 0,
+    "dsb": 32,
+    "df": 5137000,
+    "dpo": 60
+  },
+  "integer_limits": {
+    "dr": [
+      100000,
+      20000000
+    ],
+    "db": [
+      1,
+      2048
+    ],
+    "dn": [
+      1,
+      256
+    ],
+    "dsl": [
+      0,
+      65535
+    ],
+    "dsh": [
+      0,
+      65535
+    ],
+    "dsb": [
+      16,
+      33
+    ],
+    "df": [
+      5091000,
+      6125000
+    ],
+    "dpo": [
+      20,
+      80
+    ]
+  },
+  "readonly_globals": [
+    "ackseq",
+    "ackop",
+    "ackrc",
+    "rfmode",
+    "flo",
+    "rate",
+    "att",
+    "code",
+    "framed",
+    "fbytes",
+    "fcount",
+    "runflag",
+    "refsrc",
+    "refok",
+    "clkstate",
+    "tfsstat",
+    "tfkhz",
+    "extatt",
+    "tempmc",
+    "tempok",
+    "rxon",
+    "rxf",
+    "rxrate",
+    "rxbw",
+    "rxgain",
+    "rxmode",
+    "rxcode",
+    "rxstat",
+    "rxbits",
+    "rxerrs",
+    "rxframes",
+    "countsat",
+    "qualified",
+    "rfvalid",
+    "source",
+    "outkhz",
+    "route",
+    "sysvalid",
+    "adfix",
+    "syncbits",
+    "synclo",
+    "synchi",
+    "syncbit",
+    "totalatt",
+    "rev",
+    "pcal",
+    "pcmpcal",
+    "soqpcal",
+    "ifvalid",
+    "ifkhz",
+    "iftarget",
+    "ifatten",
+    "rfpmag",
+    "rfexpect",
+    "rfmodel",
+    "rffault",
+    "rfphase"
+  ],
+  "field_ids": {
+    "dr": 1,
+    "db": 2,
+    "dn": 3,
+    "dsl": 4,
+    "dsh": 5,
+    "dsb": 6,
+    "df": 7,
+    "dpo": 8
+  },
+  "committed_snapshot_globals": [
+    "cackseq",
+    "cackop",
+    "cackrc",
+    "crfmode",
+    "cflo",
+    "crate",
+    "catt",
+    "ccode",
+    "cframed",
+    "cfbytes",
+    "cfcount",
+    "crunflag",
+    "crefsrc",
+    "crefok",
+    "cclkstate",
+    "ctfsstat",
+    "ctfkhz",
+    "cextatt",
+    "ctempmc",
+    "ctempok",
+    "crxon",
+    "crxf",
+    "crxrate",
+    "crxbw",
+    "crxgain",
+    "crxmode",
+    "crxcode",
+    "crxstat",
+    "crxbits",
+    "crxerrs",
+    "crxframes",
+    "ccountsat",
+    "cqualified",
+    "crfvalid",
+    "csource",
+    "coutkhz",
+    "croute",
+    "csysvalid",
+    "cadfix",
+    "csyncbits",
+    "csynclo",
+    "csynchi",
+    "csyncbit",
+    "ctotalatt",
+    "crev",
+    "cpcal",
+    "cpcmpcal",
+    "csoqpcal",
+    "cifvalid",
+    "cifkhz",
+    "ciftarget",
+    "cifatten",
+    "crfpmag",
+    "crfexpect",
+    "crfmodel",
+    "crffault",
+    "crfphase"
+  ],
+  "snapshot_commit": "PS writes rev last; timer copies all readonly globals to c* atomically; STOP/APPLY invalidate snapshot until next rev",
+  "declared_int_value_bytes": 984,
+  "rendering": {
+    "revision": "v10",
+    "cache_ints": 46,
+    "full_clear": "physical page init only",
+    "body_clear": "page/keypad/picker layout changes only",
+    "same_layout": "changed regions only"
+  },
+  "native_compiled": true,
+  "hmi_or_tft_generated": true,
+  "hardware_tested": false,
+  "apply": {
+    "version": 6,
+    "opcode": 14,
+    "bytes": 63,
+    "crc_input_bytes": 56,
+    "arguments": [
+      "dm",
+      "dr/1000",
+      "dc",
+      "dfr",
+      "db",
+      "dn",
+      "di",
+      "dsl",
+      "dsh",
+      "dsb+dsx*256+(dr%1000)*1024",
+      "df",
+      "dpo*500"
+    ],
+    "rate_step_bps": 1
+  },
+  "other_requests": {
+    "version": 2,
+    "opcode": 3,
+    "bytes": 51
+  },
+  "fixed_profile": {
+    "if_hz": 70000000,
+    "target_mdBm": -30000,
+    "external_reference_hz": 10000000,
+    "ad9361_reference_hz": 40000000,
+    "calibration_required_per_modulation": true
+  },
+  "final_output": {
+    "frequency_khz_ranges": [
+      [
+        5091000,
+        5150000
+      ],
+      [
+        5925000,
+        6125000
+      ]
+    ],
+    "frequency_step_khz": 100,
+    "power_dbm_range": [
+      -40,
+      -10
+    ],
+    "screen_power_step_db": 0.5,
+    "draft_power_unit_db": 0.5,
+    "lo1_khz": 1430000,
+    "mid_khz": 1500000,
+    "lo2": "final_khz-1500000",
+    "final_rf_hardware_qualified": false
+  },
+  "stop": "A5 5A 01 02 FF FF FF",
+  "sync": "dsl|dsh<<16|dsx<<32; 16..33 bits; MSB first; reject overflow",
+  "native_build_evidence": "verification/native_build.json"
+}

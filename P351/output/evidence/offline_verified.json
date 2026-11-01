@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "hardware_tested": false,
+  "tests": [
+    "production C controller",
+    "full Ethernet protocol",
+    "actual RTL XSIM"
+  ]
+}

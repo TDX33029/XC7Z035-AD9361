@@ -1,0 +1,18 @@
+#-----------------------------------------------------------
+# Vivado v2020.2 (64-bit)
+# SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
+# IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
+# Start of session at: Mon Oct 19 10:19:23 2026
+# Process ID: 17996
+# Current directory: C:/Users/Jump/Desktop/AD9361TX/migration/p351/vivado/P351_AD9361TX
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent14628 C:\Users\Jump\Desktop\AD9361TX\migration\p351\vivado\P351_AD9361TX\P351_AD9361TX.xpr
+# Log file: C:/Users/Jump/Desktop/AD9361TX/migration/p351/vivado/P351_AD9361TX/vivado.log
+# Journal file: C:/Users/Jump/Desktop/AD9361TX/migration/p351/vivado/P351_AD9361TX\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/Jump/Desktop/AD9361TX/migration/p351/vivado/P351_AD9361TX/P351_AD9361TX.xpr
+update_compile_order -fileset sources_1
+launch_runs impl_1 -to_step write_bitstream -jobs 16
+wait_on_run impl_1
+open_bd_design {C:/Users/Jump/Desktop/AD9361TX/migration/p351/vivado/P351_AD9361TX/P351_AD9361TX.srcs/sources_1/bd/design_1/design_1.bd}
+close_bd_design [get_bd_designs design_1]
