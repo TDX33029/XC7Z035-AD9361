@@ -349,6 +349,31 @@ void screen_uart0_init(void)
     xil_printf("[screen] UART0 115200 8N1 ready; IF v4 / RF request v5, legacy writes disabled\r\n");
 }
 
+/* 启动早期或tx_boot_fail直接画一行ASCII，绕开尚未启动的v2握手。
+ * 只用于诊断，不写业务变量，不参与RF/所有权判断。 */
+void screen_uart0_boot_message(const char *message)
+{
+    char command[128];
+    char safe[64];
+    u32 i, n;
+    if (!message || !screen_ready)
+        return;
+    for (i = 0U; i + 1U < sizeof safe && message[i]; ++i) {
+        char c = message[i];
+        safe[i] = (c >= ' ' && c <= '~' && c != '"' && c != '\\') ? c : '?';
+    }
+    safe[i] = '\0';
+    n = (u32)snprintf(command, sizeof command,
+                      "xstr 8,112,464,24,5,63488,65535,0,1,1,\"P351: %s\"", safe);
+    if (n >= sizeof command)
+        n = sizeof command - 1U;
+    for (i = 0U; i < n; ++i)
+        XUartPs_SendByte(screen_uart.Config.BaseAddress, (u8)command[i]);
+    XUartPs_SendByte(screen_uart.Config.BaseAddress, 0xFFU);
+    XUartPs_SendByte(screen_uart.Config.BaseAddress, 0xFFU);
+    XUartPs_SendByte(screen_uart.Config.BaseAddress, 0xFFU);
+}
+
 void screen_uart0_poll(void)
 {
     XTime now;
@@ -439,6 +464,7 @@ u8 screen_uart0_take_command(screen_command_t *request)
 
 #else
 void screen_uart0_init(void) {}
+void screen_uart0_boot_message(const char *message) { (void)message; }
 void screen_uart0_rf_watchdog(u8 armed) { (void)armed; }
 void screen_uart0_poll(void) {}
 u8 screen_uart0_take_stop(void) { return 0U; }

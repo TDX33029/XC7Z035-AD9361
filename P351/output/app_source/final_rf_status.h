@@ -24,4 +24,17 @@ enum {
     FR_BOARD_FLAGS, FR_SOURCE, FR_REPEAT, FR_RESERVED
 };
 void board_final_rf_snapshot(u32 words[FINAL_RF_STATUS_WORDS]);
+
+/* RDFQ+nonce -> RDFA+nonce+20个小端u32：最近一次屏幕/PC整机请求的原始值，
+ * 不论PS是否接受。屏幕或PC修改参数后即使保护拒绝发射，另一侧也能看到请求值；
+ * result字段明确给出PS结果，未应用的值不得当作已发射状态。 */
+#define FINAL_RF_REQUEST_VERSION 1U
+#define FINAL_RF_REQUEST_WORDS 20U
+enum {
+    FRQ_VERSION, FRQ_VALID, FRQ_SEQUENCE, FRQ_OP, FRQ_RESULT,
+    FRQ_DM, FRQ_DR, FRQ_DC, FRQ_DFR, FRQ_DB, FRQ_DN, FRQ_DI,
+    FRQ_DSL, FRQ_DSH, FRQ_DSX, FRQ_DSB, FRQ_DF, FRQ_DPO,
+    FRQ_RESERVED0, FRQ_RESERVED1
+};
+void board_final_rf_request_snapshot(u32 words[FINAL_RF_REQUEST_WORDS]);
 #endif

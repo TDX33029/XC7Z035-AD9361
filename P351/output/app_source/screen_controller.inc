@@ -16,6 +16,63 @@ static XTime screen_system_locked_at;
 static u32 screen_system_signature[BOARD_CONFIG_WORDS], screen_system_tfs_signature[3];
 static u8 screen_if70_committed, screen_if70_mode;
 static u32 screen_if70_signature[BOARD_CONFIG_WORDS];
+/* 整机APPLY成功后把已提交值回写到屏幕草稿变量（df/dr/...），
+ * 使屏幕编辑页与板端/上位机保持同一份数据，并清除屏幕未应用标记。 */
+static u8 screen_draft_sync_pending, screen_draft_sync_index, screen_draft_sync_count;
+static const char *screen_draft_sync_names[14];
+static u32 screen_draft_sync_values[14];
+static void screen_draft_sync_begin(const screen_command_t *c, u8 committed);
+
+/* 最近一次整机请求的原始值，含被保护拒绝的请求。RDFA只读快照；
+ * 它让另一侧看到“用户请求了什么”，result明确区分已应用/未就绪/忙/失败。 */
+static u32 screen_req_words[FINAL_RF_REQUEST_WORDS] = {
+    FINAL_RF_REQUEST_VERSION, 0U
+};
+
+static u8 screen_request_capture(const screen_command_t *c)
+{
+    const u32 *a;
+    u32 i;
+    if(!c || (c->op!=SC_UP70_TX && c->op!=SC_UP70_PRECISE_TX &&
+              c->op!=SC_IF70_TX) || !screen_command_valid(c)) return 0U;
+    a=c->arg;
+    for(i=0U;i<FINAL_RF_REQUEST_WORDS;++i) screen_req_words[i]=0U;
+    screen_req_words[FRQ_VERSION]=FINAL_RF_REQUEST_VERSION;
+    screen_req_words[FRQ_VALID]=1U;
+    screen_req_words[FRQ_SEQUENCE]=c->sequence;
+    screen_req_words[FRQ_OP]=c->op;
+    screen_req_words[FRQ_RESULT]=SC_PENDING;
+    screen_req_words[FRQ_DM]=a[0];
+    screen_req_words[FRQ_DR]=screen_command_rate_hz(c);
+    screen_req_words[FRQ_DC]=(a[0]==0U)?a[2]:0U;
+    screen_req_words[FRQ_DFR]=a[3];
+    screen_req_words[FRQ_DB]=a[4];
+    screen_req_words[FRQ_DN]=a[5];
+    screen_req_words[FRQ_DI]=a[6];
+    screen_req_words[FRQ_DSL]=a[7];
+    screen_req_words[FRQ_DSH]=a[8];
+    screen_req_words[FRQ_DSX]=(a[9]>>8)&1U;
+    screen_req_words[FRQ_DSB]=a[9]&255U;
+    if(c->op!=SC_IF70_TX) {
+        screen_req_words[FRQ_DF]=a[10];
+        screen_req_words[FRQ_DPO]=a[11]/500U;
+    }
+    return 1U;
+}
+
+static void screen_request_result_for(const screen_command_t *c, u32 rc)
+{
+    if(c && screen_req_words[FRQ_VALID] &&
+       screen_req_words[FRQ_SEQUENCE]==c->sequence &&
+       screen_req_words[FRQ_OP]==c->op)
+        screen_req_words[FRQ_RESULT]=rc;
+}
+
+void board_final_rf_request_snapshot(u32 f[FINAL_RF_REQUEST_WORDS])
+{
+    u32 i;
+    for(i=0U;i<FINAL_RF_REQUEST_WORDS;++i) f[i]=screen_req_words[i];
+}
 #include "screen_up70_controller.inc"
 
 /* 新前面板固定IF事务不操作TFS/外衰减器，也不提供内部40MHz旁路。
@@ -213,6 +270,7 @@ static void screen_v2_cancel(void)
         p351_clock_abort(); refclk_transaction_pending=0; refclk_valid=0;
         modulation_config_fail_closed();
     } else (void)tfs_control_request(3,5,0);
+    screen_request_result_for(&screen_async,SC_STOPPED);
     if(!screen_async_pc) screen_uart0_ack(screen_async.sequence,screen_async.op,SC_STOPPED);
     udp_ctrl_final_rf_complete(screen_async.sequence,screen_async.op,SC_STOPPED);
     screen_async_active=0; screen_uart0_set_busy(0);
@@ -297,14 +355,75 @@ static u32 screen_v2_execute(const screen_command_t *c)
     return SC_PENDING;
 }
 
+/* 所有整机请求先留存原始值，再进入可能因保护/忙/STOP拒绝的执行器。
+ * 记录不受结果影响；result在立即返回或事务完成时更新。 */
+static u32 screen_v2_execute_capture(const screen_command_t *c)
+{
+    u32 rc;
+    u8 captured=screen_request_capture(c);
+    rc=screen_v2_execute(c);
+    if(captured && rc!=SC_PENDING) screen_request_result_for(c,rc);
+    return rc;
+}
+
 /* PC整机入口与屏幕共用同一个执行器；不复用屏幕ACK/失联所有权。 */
 u32 board_pc_final_rf_execute(const screen_command_t *c)
 {
     u32 rc;
     screen_request_pc=1U;
-    rc=screen_v2_execute(c);
+    rc=screen_v2_execute_capture(c);
+    /* PC发起的整机请求即使被保护拒绝，也把请求值同步到屏幕草稿；
+     * dirty=1表示仍未应用，屏幕不会把它误认为已发射。 */
+    if(rc!=SC_PENDING)
+        screen_draft_sync_begin(c,rc==SC_OK);
     screen_request_pc=0U;
     return rc;
+}
+
+/* 整机事务成功完成后调用；值取自已接受的请求参数，不猜测硬件。
+ * 屏幕t3按键从这些草稿变量组帧，因此回写后屏幕“应用”发送的就是板端实际值。 */
+static void screen_draft_sync_begin(const screen_command_t *c, u8 committed)
+{
+    const u32 *a=c->arg;
+    u32 i=0U, rate;
+    if(!c || !screen_command_valid(c) ||
+       (c->op!=SC_UP70_TX && c->op!=SC_UP70_PRECISE_TX && c->op!=SC_IF70_TX))
+        return;
+    rate=(c->op==SC_UP70_PRECISE_TX)?screen_command_rate_hz(c):a[1]*1000U;
+#define DRAFT_PUSH(n,v) do { screen_draft_sync_names[i]=(n); \
+                             screen_draft_sync_values[i++]=(u32)(v); } while(0)
+    DRAFT_PUSH("dm",a[0]);                               /* 调制 */
+    DRAFT_PUSH("dr",rate);                               /* 码率 bit/s */
+    DRAFT_PUSH("dc",(a[0]==0U)?a[2]:0U);                 /* PCM码型 */
+    DRAFT_PUSH("dfr",a[3]);                              /* 帧同步 */
+    DRAFT_PUSH("db",a[4]);                               /* 小帧字节 */
+    DRAFT_PUSH("dn",a[5]);                               /* 复帧数 */
+    DRAFT_PUSH("di",a[6]);                               /* 无限重复 */
+    DRAFT_PUSH("dsl",a[7]);                              /* 同步字低16 */
+    DRAFT_PUSH("dsh",a[8]);                              /* 同步字高16 */
+    DRAFT_PUSH("dsx",(a[9]>>8)&1U);                      /* 第33位 */
+    DRAFT_PUSH("dsb",a[9]&255U);                         /* 同步长度 */
+    if(c->op!=SC_IF70_TX) {
+        DRAFT_PUSH("df",a[10]);                          /* 最终kHz */
+        DRAFT_PUSH("dpo",a[11]/500U);                    /* 0.5dB步 */
+    }
+    DRAFT_PUSH("dirty",committed?0U:1U);                 /* 未应用时保留未应用标记 */
+#undef DRAFT_PUSH
+    screen_draft_sync_count=(u8)i;
+    screen_draft_sync_index=0U;
+    screen_draft_sync_pending=1U;
+}
+
+static void screen_draft_sync_service(void)
+{
+    u8 index=screen_draft_sync_index;
+    if(!screen_draft_sync_pending) return;
+    if(!screen_uart0_v2_link()) { screen_draft_sync_pending=0U; return; }
+    if(screen_uart0_write_number(screen_draft_sync_names[index],
+                                screen_draft_sync_values[index])) {
+        if(++screen_draft_sync_index>=screen_draft_sync_count)
+            screen_draft_sync_pending=0U;
+    }
 }
 u8 board_screen_rf_owned(void)
 {
@@ -374,13 +493,23 @@ static void screen_v2_service(void)
             }
             if(rc==SC_OK && screen_async.op==SC_TFS)
                 screen_tfs_khz=screen_async.arg[1]*65536U+screen_async.arg[0];
+            screen_request_result_for(&screen_async,rc);
             if(!screen_async_pc) screen_uart0_ack(screen_async.sequence,screen_async.op,rc);
+            /* 成功→屏幕草稿回填并清除dirty；PC发起但被拒绝→也回填请求值，
+             * dirty=1；屏幕发起但被拒绝→保留屏幕自己的编辑值，不回写。 */
+            if(rc==SC_OK || screen_async_pc)
+                screen_draft_sync_begin(&screen_async,rc==SC_OK);
             udp_ctrl_final_rf_complete(screen_async.sequence,screen_async.op,rc);
             screen_async_active=0; screen_uart0_set_busy(0);
         }
     }
-    if(!screen_async_active && screen_uart0_take_command(&c))
-        screen_uart0_ack(c.sequence,c.op,screen_v2_execute(&c));
+    if(!screen_async_active && screen_uart0_take_command(&c)) {
+        u32 rc=screen_v2_execute_capture(&c);
+        /* 屏幕即时成功（如已就绪的固定IF）也要清除未应用标记；
+         * 即时拒绝时屏幕保留自己的编辑值。 */
+        if(rc==SC_OK) screen_draft_sync_begin(&c,1U);
+        screen_uart0_ack(c.sequence,c.op,rc);
+    }
 }
 
 /* 全局只读变量与草稿分离。rev=0表示快照传输中，最后提交非零rev。
@@ -402,7 +531,11 @@ static void screen_v2_publish(void)
     u32 pcm_cal,soq_cal,mode_cal,up_if_valid;
     p351_up70_if_plan_t if_plan;
     s32 temp;
-    if(!screen_uart0_v2_link()) { index=99; return; }
+    if(!screen_uart0_v2_link()) {
+        index=99; screen_draft_sync_pending=0U; return;
+    }
+    /* 草稿回写优先占用UART队列；每个主循环至多一条TJC指令。 */
+    screen_draft_sync_service();
     XTime_GetTime(&now);
     if(index==99) {
         if(revision && now-last<COUNTS_PER_SECOND) return;

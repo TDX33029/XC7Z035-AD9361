@@ -18,6 +18,7 @@
 #include "dma_rx.h"
 #include "eth_link.h"
 #include "udp_stack.h"
+#include "udp_dhcp.h"
 #include "app_upload.h"
 #include "dma_tx_bit.h"
 #include "tx_bit_protocol.h"
@@ -758,6 +759,7 @@ static int tx_lvds_port_verify(u8 repair) {
 static void tx_boot_fail(const char *stage, int32_t status) {
 	xil_printf("[main] FATAL %s rc=%d; AD9361 reset asserted, RF OFF\r\n",
 			stage, (int) status);
+	screen_uart0_boot_message(stage);
 	Axi_Ctrl_Write(DDS_INC, 0U);
 	gpio_set_value(GPIO_RESET_PIN, 0);
 	for (;;) { }
@@ -1690,6 +1692,7 @@ static void tx_apply_config(u8 tx1_mode, u8 tx2_mode, u64 lo_hz, u32 bw_hz,
 	}
 	/* 校准期间接收到的STOP不能被本次恢复发射越过；只查看，不消费停发请求。 */
 	eth_rx_poll();
+	udp_dhcp_poll();
 	udp_network_service();
 	screen_uart0_poll();
 	/* UART FIFO最多64字节，一轮32字节预算不足以读完APPLY后紧随的STOP。 */
@@ -2027,6 +2030,7 @@ static u8 screen_up70_chip_healthy(u32 expected_atten)
 /* 前台执行，不从UART中断调用；STOP只观察，不消费，留给主循环完成停发。 */
 static u8 screen_stop_requested(void) {
 	eth_rx_poll();
+	udp_dhcp_poll();
 	udp_network_service();
 	screen_uart0_poll();
 	screen_uart0_poll();
@@ -2432,6 +2436,10 @@ int main(void) {
 
 	xil_printf(
 			"\r\n=== AD9361TX 1R1T LVDS (61.44 MSPS / 122.88 MHz DATA_CLK) ===\r\n");
+	/* 先建立屏幕UART0，使后续AD9361/DMA初始化失败能在屏幕上显示阶段名；
+	 * 业务握手仍由主循环的screen_uart0_poll执行。 */
+	screen_uart0_init();
+	screen_uart0_boot_message("BOOT OK");
 	xil_printf("[rf-channel] profile RX%uA/TX%uA only; logical slot0 active, slot1 disabled\r\n",
 			(unsigned)RF_RX_PHYSICAL_CHANNEL, (unsigned)RF_TX_PHYSICAL_CHANNEL);
 	print_boot_diagnostics();
@@ -2452,15 +2460,19 @@ int main(void) {
 	gpio_init(GPIO_DEVICE_ID); /* EMIO GPIO */
 	gpio_direction(default_init_param.gpio_resetb, 1);
 	Gpio_Emio_Init(); /* AD9361控制信号方向和初始电平。 */
+	screen_uart0_boot_message("board init");
 	if (p351_board_init() != 0)
 		tx_boot_fail("P351_board_identity_route", -1);
+	screen_uart0_boot_message("SPI init");
 	init_status = spi_init(SPI_DEVICE_ID, 1, 0); /* AD9361寄存器SPI；与PL上的TFS SPI不同。 */
 	if (init_status != SUCCESS)
 		tx_boot_fail("AD9361_SPI_init", init_status);
 
+	screen_uart0_boot_message("AD9361 init");
 	init_status = ad9361_init(&ad9361_phy, &default_init_param);
 	if (init_status != 0 || !ad9361_phy)
 		tx_boot_fail("ad9361_init", init_status);
+	screen_uart0_boot_message("AD9361 ok");
 	if (rf_channel_profile_verify() != XST_SUCCESS)
 		tx_boot_fail("RF_channel_profile", -5);
 
@@ -2512,8 +2524,10 @@ int main(void) {
 	/* BIST PN9 eye scan: AD9361 16x16 coarse delays followed by common and
 	 * per-lane FPGA IDELAY scans.  Normal RX data is restored before startup
 	 * continues; failure keeps the saved interface delays and is reported. */
+	screen_uart0_boot_message("LVDS cal");
 	if (lvds_rx_auto_calibrate(ad9361_phy, &lvds_cal_result, 1) != 0)
 		xil_printf("[main] WARNING: LVDS PRBS calibration failed\r\n");
+	screen_uart0_boot_message("LVDS ok");
 	if (tx_rf_gate_apply(0U, 0U) != XST_SUCCESS)
 		tx_boot_fail("TX_RF_gate", -3);
 	if (tx_lvds_port_verify(1U) != XST_SUCCESS)
@@ -2540,21 +2554,27 @@ int main(void) {
 			(unsigned) ad9361_ensm_get_state(ad9361_phy));
 
 	/* 先安装DMA/GIC，再初始化BIT协议；自动发射只能在这些步骤之后启动。 */
+	screen_uart0_boot_message("DMA RX");
 	if (dma_rx_init() != XST_SUCCESS) {
 		xil_printf(
 				"[main] monitor DMA unavailable; continuing TX/network diagnostics\r\n");
 	}
+	screen_uart0_boot_message("GIC init");
 	if (dma_rx_gic_init() != XST_SUCCESS) {
+		screen_uart0_boot_message("GIC FAILED");
 		while (1)
 			;
 	}
 	dma_rx_intr_enable();
+	screen_uart0_boot_message("DMA TX");
 	if (dma_tx_bit_init() != XST_SUCCESS) {
 		xil_printf("[txbit] init failed; RF remains muted\r\n");
+		screen_uart0_boot_message("DMA TX FAILED");
 		while (1) {
 		}
 	}
 	tx_bit_protocol_init();
+	screen_uart0_boot_message("DMA ok");
 	/* 接收PL可能在PS重新RUN ELF前已运行；先确认新ABI并停止旧解调。
 	 * 这一步不调谐RX、不开启TX；RX默认参数从rx_receiver_profile.h读取。 */
 	{
@@ -2565,11 +2585,14 @@ int main(void) {
 
 	/* GEM复用已有GIC；网口失败仍继续运行默认参考与本地服务。
 	 * refclk_valid=0：初始化通信时也不允许任何任务提前开RF。 */
+	screen_uart0_boot_message("NET init");
 	udp_net_init();
+	screen_uart0_boot_message("NET ok");
 	/* 配套P351 BSP已启用UART0-EMIO：独立处理屏幕握手、只读快照和原子APPLY。
 	 * UART1仅供调试；未带UART0的错误BSP会被构建检查拒绝，不能称为屏幕可用。 */
 	screen_uart0_init();
 	boot_reference_init();
+	screen_uart0_boot_message("LOOP");
 
 	/* 网口与独立屏幕共用服务循环；UART字节只排队，业务互斥与STOP在此处理。 */
 	xil_printf(
@@ -2606,6 +2629,7 @@ int main(void) {
 				xil_printf("[p351-safety] latched PL interlock; RF OFF; fresh APPLY required\r\n");
 			}
 			eth_rx_poll();
+			udp_dhcp_poll();
 			udp_network_service();
 			/* 只为屏幕拥有的任务启用断屏停发，不干扰独立PC调试任务。
 			 * 常规sendme探测2s一次，连续6s无页面回执即STOP；重启报文立即STOP。 */
@@ -2711,6 +2735,9 @@ int main(void) {
 static void udp_net_init(void) {
 	eth_link_init(); /* GEM0、PHY、BD环与中断；复用DMA的GIC。 */
 	udp_stack_init();
+	/* 先取DHCP租约（60 s无服务器时回退192.168.1.2/24），再由主循环重试ARP。
+	 * 屏幕与RF不依赖网络，DHCP失败不会阻塞启动。 */
+	udp_dhcp_start();
 	udp_stream_init();
 	if (eth_link_is_up()) {
 		u8 ar = udp_arp_resolve(); /* 初次ARP解析；未成功时主循环继续重试。 */

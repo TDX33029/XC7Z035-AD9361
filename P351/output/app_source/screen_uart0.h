@@ -9,6 +9,8 @@
  * APPLY由main复用受保护RF/调制/本地PN11流程，接收不等于执行成功。
  * 原诊断页面ID4/5与新页面控件冲突，默认禁用旧触摸RF映射。 */
 void screen_uart0_init(void);
+/* 启动/致命失败时直接在屏幕当前页画一行ASCII诊断；不依赖v2握手。 */
+void screen_uart0_boot_message(const char *message);
 void screen_uart0_poll(void);
 /* 仅屏幕整机/本地任务拥有RF时启用；断线/重启锁存STOP，不自动恢复。 */
 void screen_uart0_rf_watchdog(u8 armed);

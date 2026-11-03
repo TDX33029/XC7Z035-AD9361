@@ -17,6 +17,7 @@
  *   [14..41] ARP 头 (28B)
  * ==========================================================================*/
 #include "udp_stack.h"
+#include "udp_dhcp.h"
 #include "eth_link.h"
 #include "tx_bit_protocol.h"
 #include "app_upload.h"
@@ -38,7 +39,7 @@ static const u8 local_mac[6] = { ETH_LOCAL_MAC0, ETH_LOCAL_MAC1, ETH_LOCAL_MAC2,
 static u8  peer_mac[6]      = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
 static u8  peer_mac_valid   = 0;
 static u8 board_ip[4]={ETH_IP_ADDR0,ETH_IP_ADDR1,ETH_IP_ADDR2,ETH_IP_ADDR3};
-static u8 board_mask[4]={255,255,255,0}, board_gateway[4];
+static u8 board_mask[4]={255,255,0,0}, board_gateway[4];
 static u8 rollback_ip[4], rollback_mask[4], rollback_gateway[4], config_owner[4];
 static u32 config_nonce;
 static XTime config_deadline;
@@ -148,6 +149,33 @@ void udp_stack_init(void)
     memset(&final_command,0,sizeof final_command);
 }
 
+/* DHCP 是唯一允许在运行期改写本机地址的来源。地址变化后旧的 ARP
+ * 对端、数据流接收方和 NCFG trial 状态都不再可信，必须全部作废。 */
+void udp_stack_set_addresses(const u8 *ip, const u8 *mask, const u8 *gw)
+{
+    if (!ip || !mask || !gw) return;
+    /* 续租通常返回同一地址；无变化时不得中断正在进行的采集/数据流。 */
+    if (!memcmp(board_ip, ip, 4U) && !memcmp(board_mask, mask, 4U) &&
+        !memcmp(board_gateway, gw, 4U)) return;
+    memcpy(board_ip, ip, 4U);
+    memcpy(board_mask, mask, 4U);
+    memcpy(board_gateway, gw, 4U);
+    peer_mac_valid = 0U;
+    memset(peer_ip, 0, 4U);
+    config_trial = 0U;
+    config_nonce = 0U;
+    udp_stream_force(0U);
+    udp_ctrl_capture_clear();
+    xil_printf("[net] local address %u.%u.%u.%u/%u.%u.%u.%u\r\n",
+        board_ip[0], board_ip[1], board_ip[2], board_ip[3],
+        board_mask[0], board_mask[1], board_mask[2], board_mask[3]);
+}
+
+const u8 *udp_stack_local_ip(void)
+{
+    return board_ip;
+}
+
 /* RFC1071 校验和（网络序）；奇数长度末字节按低8位补零处理。 */
 u16 ip_checksum(const u8 *data, u32 len)
 {
@@ -246,7 +274,8 @@ static u8 udp_final_rf_guard(const u8 *request, u32 ihl,
     if (!board_final_rf_owned()) return 0U;
     if ((length==71U && memcmp(p,"FRCM",4U)==0) ||
         (length == 8U && (memcmp(p,"FRCQ",4U)==0 || memcmp(p,"PING",4U)==0 ||
-         memcmp(p,"CFGQ",4U)==0 || memcmp(p,"FRFQ",4U)==0 || memcmp(p,"TMPQ",4U)==0 ||
+         memcmp(p,"CFGQ",4U)==0 || memcmp(p,"FRFQ",4U)==0 || memcmp(p,"RDFQ",4U)==0 ||
+         memcmp(p,"TMPQ",4U)==0 ||
          memcmp(p,"RXQ1",4U)==0 || memcmp(p,"RXSQ",4U)==0 || memcmp(p,"IQSZ",4U)==0 ||
          memcmp(p,"RXFQ",4U)==0 || memcmp(p,"RXBW",4U)==0)) ||
         (length == 12U && memcmp(p,"BQRY",4U)==0) ||
@@ -332,6 +361,28 @@ static void udp_final_rf_reply(const u8 *request,u32 ihl,u32 nonce)
     put_be16(out+38,(u16)(8U+payload));
     memcpy(out+42,"FRFA",4U); put_le32(out+46,nonce);
     for(i=0U;i<FINAL_RF_STATUS_WORDS;i++) put_le32(out+50U+4U*i,words[i]);
+    eth_tx_send(out,(u16)(42U+payload));
+}
+
+/* RDFQ+nonce -> RDFA+nonce+20字：最近一次整机请求的原始值（含被拒请求）。
+ * 只读，不占用RF所有权、不访问SPI；result字段区分已应用与未就绪/忙/失败。 */
+static void udp_request_draft_reply(const u8 *request,u32 ihl,u32 nonce)
+{
+    u32 words[FINAL_RF_REQUEST_WORDS],i;
+    u32 payload=8U+4U*FINAL_RF_REQUEST_WORDS;
+    u8 *out=eth_tx_get_buf();
+    board_final_rf_request_snapshot(words);
+    memset(out,0,42U+payload);
+    memcpy(out,request+6,6U); memcpy(out+6,local_mac,6U);
+    put_be16(out+12,ETHTYPE_IPV4);
+    out[14]=0x45U; out[22]=64U; out[23]=17U;
+    put_be16(out+16,(u16)(28U+payload));
+    memcpy(out+26,board_ip,4U); memcpy(out+30,request+26,4U);
+    put_be16(out+24,ip_checksum(out+14,20U));
+    put_be16(out+34,UDP_PORT_CTRL); put_be16(out+36,get_be16(request+14U+ihl));
+    put_be16(out+38,(u16)(8U+payload));
+    memcpy(out+42,"RDFA",4U); put_le32(out+46,nonce);
+    for(i=0U;i<FINAL_RF_REQUEST_WORDS;i++) put_le32(out+50U+4U*i,words[i]);
     eth_tx_send(out,(u16)(42U+payload));
 }
 
@@ -644,6 +695,19 @@ void udp_stack_rx_handle(const u8 *buf, u16 len)
             (get_be16(buf + 20) & 0xBFFFU) || buf[22] == 0U ||
             ip_checksum(buf + 14, ihl) != 0U)
             return; /* no fragment reassembly; never parse padding as payload */
+        /* DHCP 必须先于目的地址过滤：OFFER/ACK 可能单播到尚未配置的
+         * yiaddr，续租 ACK 单播到 ciaddr。只接受服务器(67)→客户端(68)。 */
+        if (buf[23] == 17U) {
+            u32 uoff = 14U + ihl;
+            u16 ulen = 0U;
+            if (uoff + 8U <= len) ulen = get_be16(buf + uoff + 4U);
+            if (uoff + 8U <= len && get_be16(buf + uoff) == 67U &&
+                get_be16(buf + uoff + 2U) == 68U && ulen >= 8U &&
+                uoff + ulen <= len && udp_checksum_valid(buf, uoff, ulen)) {
+                udp_dhcp_rx(buf + uoff + 8U, ulen - 8U);
+                return;
+            }
+        }
         if (memcmp(buf+30,board_ip,4U)!=0 &&
             memcmp(buf+30,"\xff\xff\xff\xff",4U)!=0)
             return;
@@ -659,9 +723,9 @@ void udp_stack_rx_handle(const u8 *buf, u16 len)
         if (buf[o+9] != 17) return;    /* 非 UDP，忽略 */
         o += ihl;
         if (o + 8U > len) return;
-        if (get_be16(&buf[o+2]) != UDP_PORT_CTRL) return;  /* dport */
         udp_len = get_be16(buf + o + 4U);
         if (udp_len < 12U || o + udp_len > len) return;
+        if (get_be16(&buf[o+2]) != UDP_PORT_CTRL) return;  /* dport */
         if (!udp_checksum_valid(buf, o, udp_len)) return;
         len = (u16)(o + udp_len);
         o += 8;    /* UDP 头 */
@@ -695,6 +759,8 @@ void udp_stack_rx_handle(const u8 *buf, u16 len)
                 XTime_GetTime(&config_deadline);
                 config_deadline+=(XTime)COUNTS_PER_SECOND*30U;
                 config_trial=1U; peer_mac_valid=0U;
+                /* 手工 NCIP 优先于 DHCP：暂停租约，避免续租把地址改回去。 */
+                udp_dhcp_suspend();
                 udp_stream_force(0U); udp_ctrl_capture_clear();
                 xil_printf("[netcfg] trial IP=%u.%u.%u.%u; confirm within 30s\r\n",
                     board_ip[0],board_ip[1],board_ip[2],board_ip[3]);
@@ -789,6 +855,7 @@ void udp_stack_rx_handle(const u8 *buf, u16 len)
         }
         if (len-o==8U && memcmp(buf+o,"RXQ1",4)==0){udp_receiver_reply(buf,ihl,get_le32(buf+o+4));return;}
         if (len-o==8U && memcmp(buf+o,"FRFQ",4)==0){udp_final_rf_reply(buf,ihl,get_le32(buf+o+4));return;}
+        if (len-o==8U && memcmp(buf+o,"RDFQ",4)==0){udp_request_draft_reply(buf,ihl,get_le32(buf+o+4));return;}
         if (len-o==8U && memcmp(buf+o,"FRCQ",4)==0){udp_control_reply(buf,ihl,"FRCI",get_le32(buf+o+4),0x00060E01U);return;}
         if (len-o==71U && memcmp(buf+o,"FRCM",4)==0){udp_final_rf_command(buf,ihl,buf+o);return;}
         if (len - o == 8U && memcmp(buf + o, "CFGQ", 4U) == 0) {

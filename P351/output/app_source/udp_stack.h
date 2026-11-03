@@ -10,7 +10,8 @@
  *     u32 capture_id u16 frame_index u16 frame_count u16 n_groups u16 rsvd
  *     u32 ts_lo u32 ts_hi u32 rsvd。
  *
- * Board IP: 192.168.10.2. Controller/data destination learned dynamically.
+ * Board IP: DHCP lease; initial 169.254.1.2/16, fallback 192.168.1.2/24
+ * after 60 s without a lease. Controller/data destination learned dynamically.
  * 校验和：IPv4头必须正确；接收非零UDP校验和按RFC768验证，零值保留IPv4兼容。
  * 发出的UDP校验和仍为0。控制命令按完整报文定长匹配，不接受多余尾字节。
  * 本模块同时收 ARP 应答 → 维护 peer_mac cache。
@@ -46,11 +47,14 @@ u32 board_tx_bist_diag(u32 action);
 #define AD9361_TX_RF_BW_MIN_HZ 200000UL
 #define AD9361_TX_RF_BW_MAX_HZ 56000000UL
 
-/* ---- 网络常量 ---- */
-#define ETH_IP_ADDR0     192
-#define ETH_IP_ADDR1     168
-#define ETH_IP_ADDR2     10
-#define ETH_IP_ADDR3     2        /* 本机 Zynq */
+/* ---- 网络常量 ----
+ * 上电初始为链路本地地址；udp_dhcp 取得租约后替换为路由器地址，
+ * 60 s 无租约时回退 192.168.1.2/24（当前 PC 有线网段，PC 无需静态 IP）。
+ * 这里的宏只决定 DHCP 启动前的地址，运行期以 udp_dhcp 写入值为准。 */
+#define ETH_IP_ADDR0     169
+#define ETH_IP_ADDR1     254
+#define ETH_IP_ADDR2     1
+#define ETH_IP_ADDR3     2        /* 本机 Zynq，DHCP 前/回退地址 */
 
 #define UDP_PORT_DATA    40001
 #define UDP_PORT_CTRL    40000
@@ -79,6 +83,9 @@ typedef struct {
 
 /* ---- API ---- */
 void udp_stack_init(void);                       /* 清零 ARP cache 等 */
+/* DHCP 唯一写入口：切换本机IP/掩码/网关并清空已学习的对端ARP/地址。 */
+void udp_stack_set_addresses(const u8 *ip, const u8 *mask, const u8 *gw);
+const u8 *udp_stack_local_ip(void);              /* 4字节本机地址（只读） */
 void udp_network_service(void);                  /* Main-only NRES service; preserves TX. */
 u16  ip_checksum(const u8 *data, u32 len);       /* RFC1071 */
 int  udp_build_arp_request(u8 *buf, u16 *len);   /* 以太+ARP 请求，广播 */
