@@ -38,7 +38,7 @@ def parse_response(packet: bytes, nonce: int) -> tuple[bool, int]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=ACTIONS)
-    parser.add_argument("--board", default="192.168.10.2")
+    parser.add_argument("--board", default="169.254.1.2")
     args = parser.parse_args()
     nonce = secrets.randbits(32)
     request = build_request(args.action, nonce)

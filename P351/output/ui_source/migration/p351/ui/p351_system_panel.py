@@ -80,6 +80,33 @@ class SystemPanel:
                 self.variables[k].set(v); changed+=1
         return changed
 
+    def backfill_from_requested(self,draft):
+        """把最近一次整机请求（即使被保护拒绝）回填到本页草稿。"""
+        w=draft.get
+        values={
+            'rate':str(w('dr')),
+            'framed':'开' if w('dfr') else '关',
+            'bytes':str(w('db')),
+            'count':str(w('dn')),
+            'sync':f'{(w("dsx")<<32 | w("dsh")<<16 | w("dsl")):X}',
+            'bits':str(w('dsb')),
+            'repeat':'无限' if w('di') else '单次',
+        }
+        if w('op')!=12:
+            values['frequency']=f'{w("df")/1000:.1f}'
+            values['power']=f'{-w("dpo")/2:.1f}'
+        if w('dm')==0:
+            values['mode']='PCM/FM'
+            values['code']=(final_rf.LINES[w('dc')] if w('dc')<len(final_rf.LINES)
+                            else 'NRZ-L')
+        else:
+            values['mode']='SOQPSK-TG'
+        changed=0
+        for k,v in values.items():
+            if self.variables[k].get()!=v:
+                self.variables[k].set(v); changed+=1
+        return changed
+
     def plan(self):
         v={k:x.get().strip() for k,x in self.variables.items()}
         p=control.SystemPlan(mode=int(v['mode']=='SOQPSK-TG'),rate=int(v['rate']),code=final_rf.LINES.index(v['code']),
@@ -124,6 +151,8 @@ class SystemPanel:
                 if token[0]!=self.serial:continue
                 if done:
                     self.busy=False;self.apply.configure(state='normal');self.query.configure(state='normal')
+                    # 等下一轮RDFA取回本次请求值，避免用上一笔旧请求短暂覆盖本页。
+                    self.edit_pause_until=max(self.edit_pause_until,time.monotonic()+1.5)
                 if token[1]!=self.app.p351_discovery_epoch or token[2]!=self.app._p351_verified_endpoint:
                     self.updated=0;self.text.set('地址/身份已变更，旧整机状态已清除');continue
                 self.updated=time.monotonic() if state else 0
@@ -135,12 +164,29 @@ class SystemPanel:
         self.app.after(100,self.poll)
 
     def sync_tick(self):
-        """屏幕为主：PC草稿跟随板端提交状态（屏幕/PC任一侧应用后自动回填）。"""
-        state=getattr(self.app,'final_rf_state',None)
-        if not (self.follow_screen.get() and state is not None):
+        """屏幕为主：优先跟随最近一次整机请求（含被保护拒绝的请求）；
+        RDFA不可用时回退到板端已提交状态。"""
+        if not self.follow_screen.get():
             return
         if self.busy or self.pc_editing or time.monotonic()<self.edit_pause_until:
             self.app.sync_hint.set('PC编辑中，暂停回填')
+            return
+        req=getattr(self.app,'requested_rf_state',None)
+        if req is not None and req.valid:
+            sig=(req.sequence,req.op,req.result,req.dm,req.dr,req.dc,req.dfr,
+                 req.db,req.dn,req.di,req.dsl,req.dsh,req.dsx,req.dsb,
+                 req.df,req.dpo)
+            if sig==self.synced_signature:
+                return
+            self.backfill_from_requested(req)
+            self.synced_signature=sig
+            status=final_rf.SC_NAMES.get(req.result,f'结果{req.result}')
+            suffix='' if req.result==0 else '，板端未应用'
+            self.app.sync_hint.set(
+                f'已同步请求值{suffix} · {status} '+time.strftime('%H:%M:%S'))
+            return
+        state=getattr(self.app,'final_rf_state',None)
+        if state is None:
             return
         if not state.get('flags') & 64:
             self.app.sync_hint.set('已连接板卡；等待任一侧首次应用（屏幕为主）')

@@ -178,3 +178,124 @@ def read_status(board, local, *, timeout=.4, attempts=2, pc_only=False):
 
 def read_pc_status(board,local,**kwargs):
     return read_status(board,local,pc_only=True,**kwargs)
+
+
+# RDFQ/RDFA: 最近一次整机请求的原始值（含被保护拒绝的请求）。
+REQUEST_NAMES = ('version valid sequence op result dm dr dc dfr db dn di '
+                 'dsl dsh dsx dsb df dpo reserved0 reserved1').split()
+REQUEST_REPLY = struct.Struct('<4sI20I')
+SC_NAMES = {0:'已应用',1:'参数无效',2:'忙',3:'失败',4:'执行中',5:'超时',
+            6:'已停止',7:'序号错误',8:'未就绪（保护/标定/参考）'}
+OP_NAMES = {12:'IF70',13:'上变频',14:'上变频精确'}
+
+
+@dataclass(frozen=True)
+class RequestedDraft:
+    """双方共享的“用户请求值”，valid=False表示尚无整机请求。"""
+    words: tuple
+
+    def get(self,name):
+        return self.words[REQUEST_NAMES.index(name)]
+
+    @property
+    def valid(self):
+        return bool(self.get('valid'))
+
+    @property
+    def op(self):
+        return self.get('op')
+
+    @property
+    def result(self):
+        return self.get('result')
+
+    def text(self):
+        if not self.valid:
+            return '尚无整机请求值'
+        w=self.get
+        status=SC_NAMES.get(w('result'),f'结果{w("result")}')
+        lines=[f'{OP_NAMES.get(w("op"),"整机")}请求 · {status}']
+        if w('op')!=12:
+            lines[0]+=f' · {w("df")/1000:.1f} MHz · -{w("dpo")/2:g} dBm'
+        lines.append(f'{w("dr")/1e6:g} Mbit/s · '
+                     f'{"PCM/FM" if w("dm")==0 else "SOQPSK-TG"}')
+        if w('dm')==0 and w('dc')<len(LINES):
+            lines[-1]+=' · '+LINES[w('dc')]
+        if w('dfr'):
+            sync=(w('dsx')<<32)|(w('dsh')<<16)|w('dsl')
+            lines[-1]+=f' · 同步 {sync:X}/{w("dsb")} bit · {w("db")} byte × {w("dn")}'
+        else:
+            lines[-1]+=' · 不加帧同步'
+        lines[-1]+=' · '+('无限' if w('di') else '单次')
+        return '\n'.join(lines)
+
+
+def _parse_requested(data,nonce):
+    if len(data)!=REQUEST_REPLY.size:
+        raise ValueError('请求值长度不符，需配套新版PS')
+    magic,token,*words=REQUEST_REPLY.unpack(data)
+    if magic!=b'RDFA' or token!=nonce:
+        raise ValueError('请求值标识/请求号不符')
+    if len(words)!=len(REQUEST_NAMES):
+        raise ValueError('请求值字段数不符')
+    w=dict(zip(REQUEST_NAMES,words))
+    if w['version']!=1 or w['reserved0'] or w['reserved1'] or w['valid'] not in (0,1):
+        raise ValueError('请求值版本/保留字段不符')
+    if not w['valid']:
+        if any(w[n] for n in REQUEST_NAMES if n not in ('version','valid')):
+            raise ValueError('无请求时不能携带有效请求字段')
+        return RequestedDraft(tuple(words))
+    if w['op'] not in OP_NAMES or not 0<=w['result']<=8:
+        raise ValueError('请求值操作码/结果无效')
+    if not 1<=w['sequence']<=65535:
+        raise ValueError('请求值序号无效')
+    if (w['dm'] not in (0,1) or w['dc']>6 or (w['dm']==1 and w['dc']) or
+            w['dfr'] not in (0,1) or not 1<=w['db']<=2048 or
+            not 1<=w['dn']<=256 or w['db']*w['dn']>16384 or
+            w['di'] not in (0,1) or w['dsl']>0xFFFF or w['dsh']>0xFFFF or
+            w['dsx'] not in (0,1) or not 16<=w['dsb']<=33 or
+            not 100000<=w['dr']<=20000000):
+        raise ValueError('请求值调制/组帧字段越界')
+    sync=(w['dsx']<<32)|(w['dsh']<<16)|w['dsl']
+    if sync>>w['dsb']:
+        raise ValueError('请求值同步字超出声明长度')
+    if w['dfr'] and w['db']*8<=w['dsb']+(8 if w['dn']>1 else 0):
+        raise ValueError('请求值帧格式无效')
+    if w['op']==12:
+        if w['df'] or w['dpo']:
+            raise ValueError('IF70请求不应携带最终RF频率/功率')
+    elif not frequency_valid(w['df']) or not 20<=w['dpo']<=80:
+        raise ValueError('请求值最终RF频率/功率无效')
+    return RequestedDraft(tuple(words))
+
+
+def read_requested(board,local,*,timeout=.35,attempts=2):
+    """读取最近一次整机请求；旧PS不响应RDFQ时返回None，不影响FRFQ。"""
+    if not 0<timeout<=2 or not 1<=attempts<=3:
+        raise ValueError('请求值查询重试参数无效')
+    for text in (board,local):
+        address=ipaddress.IPv4Address(text)
+        if address.is_unspecified or address.is_multicast or address.is_loopback or int(address)>>24>=224:
+            raise ValueError('请求值查询需要有效单播地址')
+    if board==local:
+        raise ValueError('板卡和本机不能同地址')
+    endpoint=(board,40000)
+    nonce=secrets.randbits(32)
+    payload=struct.pack('<4sI',b'RDFQ',nonce)
+    with socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as sock:
+        sock.bind((local,0))
+        for _ in range(attempts):
+            sock.sendto(payload,endpoint)
+            deadline=time.monotonic()+timeout
+            while time.monotonic()<deadline:
+                sock.settimeout(max(.001,deadline-time.monotonic()))
+                try:
+                    data,sender=sock.recvfrom(2048)
+                except socket.timeout:
+                    break
+                if sender!=endpoint or len(data)<8:
+                    continue
+                if struct.unpack_from('<4sI',data)!=(b'RDFA',nonce):
+                    continue
+                return _parse_requested(data,nonce)
+    return None

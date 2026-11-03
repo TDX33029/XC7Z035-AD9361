@@ -68,7 +68,7 @@ def capture(board,local,path,seconds=2.0):
 def main():
     import argparse
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--board',default='192.168.10.2');parser.add_argument('--local',required=True)
+    parser.add_argument('--board',default='169.254.1.2');parser.add_argument('--local',required=True)
     parser.add_argument('--seconds',type=float,default=2);parser.add_argument('--output',required=True)
     args=parser.parse_args()
     print(json.dumps(capture(args.board,args.local,args.output,args.seconds),ensure_ascii=False,indent=2))

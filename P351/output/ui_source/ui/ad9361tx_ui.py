@@ -76,7 +76,7 @@ MODE_CONFIG_SETTLE_S = 0.100
 MONITOR_QUIESCE_SETTLE_S = 0.100
 REFCLK_SETTLE_S = 0.250
 UI_BUILD = "2026.10.05-r68-pcm8-rnrz-audit"
-FIXED_BOARD_IP = "192.168.10.2"
+FIXED_BOARD_IP = "169.254.1.2"  # DHCP 失败的链路本地回退；实际地址由 DSCI 发现
 MODE_VALUE = {"不发射": 0, "QPSK（旧DDS）": 1, "FM（旧DDS）": 2,
               "SOQPSK-TG（PL）": 3, "PCM/FM（PL）": 4,
               "正弦波/CW（PL）": 6}
@@ -1155,7 +1155,7 @@ class ControlUI(tk.Tk):
         address = detect_local_ip(FIXED_BOARD_IP)
         self.local_ip.set(address)
         self._set_connection_status("idle", "本机地址已刷新，待测试" if address else "未获取本机地址，请检查网卡")
-        self._log(f"本机路由地址：{address or '未获取'}；固定板卡 {FIXED_BOARD_IP}。自动获取不代表板卡已连接。")
+        self._log(f"本机路由地址：{address or '未获取'}；默认板卡候选 {FIXED_BOARD_IP}（DHCP 失败回退）。自动获取不代表板卡已连接。")
 
     def _build_rf_tab(self, tab: ttk.Frame) -> None:
         common = ttk.LabelFrame(tab, text="射频与时钟", padding=12)

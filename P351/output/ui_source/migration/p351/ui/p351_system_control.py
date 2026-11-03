@@ -90,8 +90,9 @@ def apply_system(board,local,plan,*,timeout=17,progress=None):
         a=ipaddress.IPv4Address(address)
         if a.is_unspecified or a.is_loopback or a.is_multicast or int(a)>>24>=224:raise ValueError('需要有效单播IPv4')
     if board==local:raise ValueError('板卡和本机地址不能相同')
-    config=board_config.read_config(board,local)
-    if not config.hardware_qualified:raise ValueError('板端未取得发射许可；未发送整机APPLY')
+    # 只核验V9身份/能力；发射许可由PS逐次判定。即使保护会拒绝，也把请求
+    # 送达板端，让RDFA把用户请求值同步到另一侧，同时绝不发射。
+    board_config.read_config(board,local)
     endpoint=(board,40000)
     nonce=secrets.randbits(32)
     request=b'FRCM'+struct.pack('<I',nonce)+wire

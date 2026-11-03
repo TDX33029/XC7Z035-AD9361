@@ -1,9 +1,10 @@
 """P351 地址发现：只读 DSCI / CFGQ，绝不改 IP、RF 或采集配置。
 
-导入模块不会枚举网卡或访问网络。自动模式仅探测已连接的物理有线
-网卡；手填本机 IPv4 时只探测该接口（包括用户明确选择的无线接口）。
-DSCA 只是候选，必须再由 p351_board_config 的严格 V9 校验确认身份。
-协议没有密码学认证；本模块防止旧包/串包，不声称抵御恶意仿冒固件。
+导入模块不会枚举网卡或访问网络。自动模式探测已连接的物理以太网
+和 Wi-Fi 网卡（板卡经路由器 DHCP 时，PC 可能只走 Wi-Fi）；手填本机
+IPv4 时只探测该接口。DSCA 只是候选，必须再由 p351_board_config 的
+严格 V9 校验确认身份。协议没有密码学认证；本模块防止旧包/串包，
+不声称抵御恶意仿冒固件。
 """
 from dataclasses import dataclass
 import ctypes
@@ -19,7 +20,10 @@ import time
 import p351_board_config
 
 PORT = 40000
-DEFAULT_BOARD = "192.168.10.2"
+# 新固件：DHCP 失败时回退链路本地地址；旧固件保留两个静态地址候选。
+# 广播 DSCI 的应答优先于这些候选，候选只用于跨网段/重连兜底。
+DEFAULT_BOARD = "169.254.1.2"
+DEFAULT_BOARDS = ("169.254.1.2", "192.168.1.2", "192.168.10.2")
 MAX_INTERFACES = 8
 MAX_RESPONDERS = 16
 
@@ -157,10 +161,18 @@ def _windows_interfaces():
         if item.OperStatus == 1 and item.IfType not in (24, 131):
             row = IfRow()
             row.Index = item.IfIndex
-            # HardwareInterface, connector present, media connected, not filter.
-            physical = (get_if(ctypes.byref(row)) == 0 and row.StatusFlags & 1
-                        and row.StatusFlags & 4 and not row.StatusFlags & (2 | 16)
-                        and row.OperStatus == 1 and row.Type == 6)
+            # Type 6=Ethernet, 71=IEEE802.11；板卡挂在路由器上时 PC 可能只走 Wi-Fi。
+            # 虚拟网卡（Hyper-V/VMware/VPN/Tailscale）在 MIB 中也常报 Ethernet，
+            # 仅凭 Type/StatusFlags 无法排除；按名称排除，避免向隧道广播 DSCI。
+            name = (item.FriendlyName or item.Description or "").lower()
+            virtual = ("vmware", "vethernet", "hyper-v", "tailscale", "mihomo",
+                       "bluetooth", "蓝牙", "本地连接*", "local area connection*",
+                       "loopback", "teredo", "isatap", "wan miniport", "virtual",
+                       "vpn", "tap-", "zerotier", "wireguard", "npcap")
+            physical = (get_if(ctypes.byref(row)) == 0
+                        and row.OperStatus == 1 and row.Type in (6, 71)
+                        and not any(marker in name for marker in virtual))
+            is_ethernet = row.Type == 6
             unicast, seen_addresses = item.FirstUnicastAddress, set()
             while unicast:
                 address_location = ctypes.addressof(unicast.contents)
@@ -170,7 +182,7 @@ def _windows_interfaces():
                 entry = unicast.contents
                 if entry.Length < Unicast.Address.offset + ctypes.sizeof(SocketAddress):
                     raise OSError("Windows IPv4 地址结构版本不支持")
-                if entry.Address.address and entry.Address.length >= 8:
+                if physical and entry.Address.address and entry.Address.length >= 8:
                     raw = ctypes.string_at(entry.Address.address, 8)
                     ip = socket.inet_ntoa(raw[4:8])
                     # sockaddr_in family is native little endian on Windows.
@@ -180,7 +192,7 @@ def _windows_interfaces():
                         if 0 <= prefix <= 32:
                             result.append(LocalInterface(ip, item.FriendlyName or
                                                          item.Description or "网络接口",
-                                                         bool(physical), prefix))
+                                                         is_ethernet, prefix))
                 unicast = entry.Next
         node = item.Next
     return result
@@ -202,10 +214,11 @@ def _posix_interfaces():
                 ip = socket.inet_ntoa(fcntl.ioctl(probe, 0x8915, request)[20:24])
                 mask = socket.inet_ntoa(fcntl.ioctl(probe, 0x891B, request)[20:24])
                 prefix = ipaddress.IPv4Network("0.0.0.0/" + mask).prefixlen
-                physical = (os.path.exists("/sys/class/net/" + name + "/device")
-                            and not os.path.isdir("/sys/class/net/" + name + "/wireless"))
+                physical = os.path.exists("/sys/class/net/" + name + "/device")
+                wireless = os.path.isdir("/sys/class/net/" + name + "/wireless")
                 if _valid_host(ip):
-                    result.append(LocalInterface(ip, name, physical, prefix))
+                    result.append(LocalInterface(ip, name, physical and not wireless,
+                                                 prefix))
             except (OSError, ValueError):
                 continue
     return result
@@ -216,13 +229,19 @@ def _all_interfaces():
 
 
 def candidate_interfaces():
-    """返回可自动探测的已连接物理有线 IPv4，不主动发送任何网络包。"""
+    """返回可自动探测的已连接物理以太网/Wi-Fi IPv4，不主动发送任何网络包。
+
+    Windows 枚举已过滤 Hyper-V/VMware/Tailscale 等虚拟或隧道网卡；
+    链路本地(169.254/16)排在真实 DHCP 地址之后，便于界面默认显示。
+    """
     try:
         available = _all_interfaces()
     except (OSError, AttributeError) as exc:
         raise DiscoveryError("读取本机网卡失败，请检查网卡状态。", (str(exc),)) from exc
-    selected = {item.local_ip: item for item in available if item.is_ethernet}
-    return sorted(selected.values(), key=lambda item: (item.name, item.local_ip))
+    selected = {item.local_ip: item for item in available}
+    return sorted(selected.values(),
+                  key=lambda item: (item.local_ip.startswith("169.254."),
+                                    not item.is_ethernet, item.name, item.local_ip))
 
 
 def _selected_interfaces(preferred_local):
@@ -239,10 +258,10 @@ def _selected_interfaces(preferred_local):
             raise DiscoveryError("本机地址未属于已连接的网卡；请检查地址或接好网线。")
         selected = selected[:1]
     if not selected:
-        raise DiscoveryError("未检测到已连接的物理以太网 IPv4；请给 P351 上电并接好网线。"
-                             "不会自动探测 Wi-Fi/VPN。")
+        raise DiscoveryError("未检测到已连接的物理以太网/Wi-Fi IPv4；请给 P351 上电并接好网线。"
+                             "不会自动探测 VPN 隧道。")
     if len(selected) > MAX_INTERFACES:
-        raise DiscoveryError("可用有线地址过多，请在本机地址栏指定连接 P351 的 IPv4。")
+        raise DiscoveryError("可用网卡地址过多，请在本机地址栏指定连接 P351 的 IPv4。")
     return selected
 
 
@@ -309,7 +328,8 @@ def discover_boards(preferred_local="", previous_board=DEFAULT_BOARD, *, timeout
 
         # Actual broadcast responders always precede the bounded legacy fallback.
         work = sorted(candidates, key=lambda pair: (sockets[pair[0]].local_ip, pair[1]))
-        known = {value for value in (previous_board, DEFAULT_BOARD) if _valid_host(value)}
+        known = {value for value in (previous_board, *DEFAULT_BOARDS)
+                 if _valid_host(value)}
         for sock, interface in sockets.items():
             for ip in sorted(known):
                 pair = (sock, ip)

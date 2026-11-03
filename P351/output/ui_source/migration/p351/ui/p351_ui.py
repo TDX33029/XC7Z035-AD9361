@@ -88,6 +88,7 @@ class P351ControlUI(shared.ControlUI):
         self.final_rf_token=None
         self.final_rf_serial=0
         self.final_rf_updated=0
+        self._p351_link_failures=0
         self._p351_discovery_request=None
         super().__init__()
         self.title('P351 校验仿真器 · TX2 / RX2 · TRX2')
@@ -107,6 +108,7 @@ class P351ControlUI(shared.ControlUI):
         self._update_power_summaries()
         self.sync_hint=tk.StringVar(self,value='等待板卡…')
         self.final_rf_state=None
+        self.requested_rf_state=None
         self._auto_discover_quiet=False
         self.system_panel.sync_label.configure(textvariable=self.sync_hint)
         self.after(100,self._poll_receiver_events)
@@ -126,7 +128,7 @@ class P351ControlUI(shared.ControlUI):
         frame=ttk.Frame(parent);frame.pack(anchor='e')
         ttk.Label(frame,textvariable=self.board_address_caption).grid(row=0,column=0,sticky='w')
         ttk.Entry(frame,textvariable=self.board_ip,width=15,state='readonly').grid(row=0,column=1,padx=(6,14))
-        ttk.Label(frame,text='本机（有线网口）').grid(row=0,column=2,sticky='w')
+        ttk.Label(frame,text='本机（网卡地址）').grid(row=0,column=2,sticky='w')
         self.p351_local_entry=ttk.Entry(frame,textvariable=self.local_ip,width=15)
         self.p351_local_entry.grid(row=0,column=3,padx=(6,10))
         self.network_test_button=ttk.Button(frame,text='测试 / 读取地址',command=self.test_connection)
@@ -171,6 +173,9 @@ class P351ControlUI(shared.ControlUI):
         self.final_rf_busy=False
         self.final_rf_token=None
         self.final_rf_updated=0
+        self.final_rf_state=None
+        self.requested_rf_state=None
+        self._p351_link_failures=0
         if 'final_rf_text' in self.__dict__:
             self.final_rf_text.set('最终RF：地址/身份未确认；旧状态已清除，未改变板端任务。')
         self.temperature_text.set('AD9361温度：地址未确认，旧读数已清除')
@@ -212,7 +217,7 @@ class P351ControlUI(shared.ControlUI):
     @staticmethod
     def _p351_discovery_worker(out,epoch,preferred,previous):
         # 后台线程只处理网络/队列，不读取或修改任何Tk变量。
-        try:result=p351_discovery.choose_single(preferred,previous,timeout=3.0)
+        try:result=p351_discovery.choose_single(preferred,previous,timeout=6.0)
         except Exception as exc:out.put((epoch,None,exc))
         else:out.put((epoch,result,None))
 
@@ -336,13 +341,18 @@ class P351ControlUI(shared.ControlUI):
         # 不读取Tk，不下发APPLY/STOP/TFS写；旧PS无响应也不改走其他命令。
         try: value,error=final_rf.read_pc_status(*endpoint),None
         except Exception as exc: value,error=None,str(exc)
-        out.put((token,value,error))
+        # RDFA是只读请求值快照；旧固件不响应时返回None，不影响FRFQ。
+        requested=None
+        if error is None:
+            try: requested=final_rf.read_requested(*endpoint)
+            except Exception: requested=None
+        out.put((token,value,error,requested))
 
     def _poll_final_rf(self):
         if self._p351_closing:return
         try:
             while True:
-                token,value,error=self.final_rf_events.get_nowait()
+                token,value,error,requested=self.final_rf_events.get_nowait()
                 if token!=self.final_rf_token:continue
                 self.final_rf_token=None
                 self.final_rf_busy=False
@@ -352,9 +362,22 @@ class P351ControlUI(shared.ControlUI):
                 if error:
                     self.final_rf_updated=0
                     self.final_rf_text.set('AD9361状态：不可用 / RF ?（'+error+'）；不沿用旧ON。')
+                    # DHCP 续租可能改变板卡地址；连续无应答时丢弃旧身份并自动重发现。
+                    # 整机事务/其它写操作期间不计数，避免把忙态误判断线。
+                    if not getattr(getattr(self,'system_panel',None),'busy',False) and not any(
+                            getattr(self,n,False) for n in ('worker_active','config_busy','network_busy','tfs_active')):
+                        self._p351_link_failures+=1
+                        if self._p351_link_failures>=5:
+                            self._p351_link_failures=0
+                            self._p351_invalidate_network()
+                            self._set_connection_status('idle','板卡连续无应答；正在自动重新发现')
+                            self._log('板卡连续5次无应答：旧的DHCP地址可能已变化，已丢弃并自动重新发现（只读DSCI/CFGQ）。')
                 else:
+                    self._p351_link_failures=0
                     self.final_rf_updated=time.monotonic()
                     self.final_rf_state=value
+                    if requested is not None:
+                        self.requested_rf_state=requested
                     self.final_rf_text.set(value.pc_text())
         except queue.Empty:pass
         self.after(100,self._poll_final_rf)
