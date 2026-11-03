@@ -1,0 +1,252 @@
+if(pending==0)
+{
+bad=0
+if(op==14)
+{
+bad=0
+if(dr<100000||dr>20000000)
+{
+bad=1
+}
+if(db<1||db>2048)
+{
+bad=1
+}
+if(dn<1||dn>256)
+{
+bad=1
+}
+if(dsl<0||dsl>65535)
+{
+bad=1
+}
+if(dsh<0||dsh>65535)
+{
+bad=1
+}
+if(dsb<16||dsb>33)
+{
+bad=1
+}
+if(df<5091000||df>6125000)
+{
+bad=1
+}
+if(dpo<20||dpo>80)
+{
+bad=1
+}
+if(dm<0||dm>1)
+{
+bad=1
+}
+if(dc<0||dc>6)
+{
+bad=1
+}
+if(dfr<0||dfr>1)
+{
+bad=1
+}
+if(di<0||di>1)
+{
+bad=1
+}
+if(dsx<0||dsx>1)
+{
+bad=1
+}
+if(df>5150000&&df<5925000)
+{
+bad=1
+}
+tmp=df%100
+if(tmp!=0)
+{
+bad=1
+}
+if(dsb<=32&&dsx!=0)
+{
+bad=1
+}
+if(dsb==16&&dsh>=1)
+{
+bad=1
+}
+if(dsb==17&&dsh>=2)
+{
+bad=1
+}
+if(dsb==18&&dsh>=4)
+{
+bad=1
+}
+if(dsb==19&&dsh>=8)
+{
+bad=1
+}
+if(dsb==20&&dsh>=16)
+{
+bad=1
+}
+if(dsb==21&&dsh>=32)
+{
+bad=1
+}
+if(dsb==22&&dsh>=64)
+{
+bad=1
+}
+if(dsb==23&&dsh>=128)
+{
+bad=1
+}
+if(dsb==24&&dsh>=256)
+{
+bad=1
+}
+if(dsb==25&&dsh>=512)
+{
+bad=1
+}
+if(dsb==26&&dsh>=1024)
+{
+bad=1
+}
+if(dsb==27&&dsh>=2048)
+{
+bad=1
+}
+if(dsb==28&&dsh>=4096)
+{
+bad=1
+}
+if(dsb==29&&dsh>=8192)
+{
+bad=1
+}
+if(dsb==30&&dsh>=16384)
+{
+bad=1
+}
+if(dsb==31&&dsh>=32768)
+{
+bad=1
+}
+tmp=db*dn
+if(tmp>16384)
+{
+bad=1
+}
+if(dfr==1)
+{
+tmp=db*8-dsb
+if(dn>1)
+{
+tmp=tmp-8
+}
+if(tmp<=0)
+{
+bad=1
+}
+}
+}
+if(bad==0)
+{
+a0=0
+a1=0
+a2=0
+a3=0
+a4=0
+a5=0
+a6=0
+a7=0
+a8=0
+a9=0
+a10=0
+a11=0
+if(op==14)
+{
+a0=dm
+a1=dr/1000
+a2=dc
+a3=dfr
+a4=db
+a5=dn
+a6=di
+a7=dsl
+a8=dsh
+tmp=dr%1000
+a9=tmp*1024
+tmp=dsx*256
+a9=a9+tmp
+a9=a9+dsb
+a10=df
+a11=dpo*500
+if(dm!=0)
+{
+a2=0
+}
+}
+if(seq>=65535)
+{
+seq=0
+}
+seq=seq+1
+waitop=op
+pending=1
+age=0
+msg=0
+if(op==14)
+{
+snapshotok=0
+readpending=0
+}
+crcrest 1,0xffff
+if(op==14)
+{
+printh A5 5A 06
+crcputh A5 5A 06
+}else
+{
+printh A5 5A 02
+crcputh A5 5A 02
+}
+prints op,1
+crcputs op,1
+prints seq,4
+crcputs seq,4
+prints a0,4
+crcputs a0,4
+prints a1,4
+crcputs a1,4
+prints a2,4
+crcputs a2,4
+prints a3,4
+crcputs a3,4
+prints a4,4
+crcputs a4,4
+prints a5,4
+crcputs a5,4
+prints a6,4
+crcputs a6,4
+prints a7,4
+crcputs a7,4
+prints a8,4
+crcputs a8,4
+if(op==14)
+{
+prints a9,4
+crcputs a9,4
+prints a10,4
+crcputs a10,4
+prints a11,4
+crcputs a11,4
+}
+prints crcval,4
+printh FF FF FF
+}else
+{
+msg=3
+}
+}
