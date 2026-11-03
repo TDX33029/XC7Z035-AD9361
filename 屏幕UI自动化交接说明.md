@@ -530,3 +530,440 @@ LVDS 时序约束不保证等价 → AD9361 LVDS 接口时序风险 → 应用�
 **分叉会话的工作已完整备份于 `.auto/fork_backup_20261102/`**（app_source 7 文件、ui_source 3 文件、
 BOOT v4-v8 与 dhcp ELF），其中 DHCP 客户端与 SDRS/SDRW 草稿镜像是 §15 设计的正确落地，
 建议后续在硬件上逐项排查后再启用（先修回退网段=192.168.1.x，再隔离镜像轮询对 TJC 链路的影响）。
+
+## 26. 附录：DHCP 自动发现 + 双侧控制/数据同步（2026-11-02 本会话）
+
+**目标**：板卡改为 DHCP 自动获取地址，上位机自动发现，不再要求把 PC 有线网卡改成固定 IP；
+屏幕与上位机都能控制板卡，且提交后的参数两侧一致。
+
+**先备份（已完成）**：`P351/backup_pre_dhcp_20261102.zip`（36,112,454 B）
+SHA256 `7cae324ea472739672dea49d65d72d20928e293f2e64662476cbc197ba923cb3`
+含 app_source、firmware、screen（v10/v11）、ui_source、r11 exe+ui 资源、pl/constraints、
+已知可用 `BOOT_dhcp_lan.bin`/`fsbl_sd/fsbl.elf`、构建 Makefile 与本交接文档。
+同目录 `.zip.sha256` 可直接校验；未改动任何现有文件，备份独立于 git。
+
+**固件（app_source，已重建 P351_APP.elf）**
+- 新增 `udp_dhcp.c/h`：自研 ARP/IPv4/UDP 栈上的 DHCP 客户端，DISCOVER→OFFER→REQUEST→ACK，
+  广播收发；租约 T1 续租、T2 重绑定；无服务器时回退 **169.254.1.2/16**（链路本地），
+  每 60 s 再试 DHCP。回退地址刻意选链路本地：PC 网卡也设为 DHCP 时，直连无路由器会得到
+  APIPA 169.254.x/16，两侧仍在同一子网，自动发现照常工作。
+- `udp_stack.c/h`：新增 `udp_stack_set_addresses()`（唯一运行期改址入口，地址未变时不清
+  ARP/不打断采集/数据流）、`udp_stack_local_ip()`；RX 在目的地址过滤前增加 67→68 端口分发；
+  修正了分叉版 DHCP 分支在 `udp_len` 未赋值时使用的问题（该 bug 会越界解析）。
+  NCIP 手工改址成功后自动 `udp_dhcp_suspend()`，DHCP 不会把手工地址改回去。
+- `main.c`：`udp_net_init()` 末尾 `udp_dhcp_start()`；主循环与 RF 事务内的服务循环都调用
+  `udp_dhcp_poll()`（非阻塞）。
+- 编译期默认地址改为 169.254.1.2/16；DHCP 成功前的 DSCI 广播也使用该地址。
+
+**屏幕↔上位机同步（固件侧，屏幕无需重刷）**
+- `screen_controller.inc` 新增草稿回写：op12/13/14 事务**成功**后，把已提交值逐条写入屏幕
+  草稿变量 `dm,dr,dc,dfr,db,dn,di,dsl,dsh,dsx,dsb,df,dpo`，最后 `dirty=0`。
+  `screen_v2_publish` 每轮优先发送一条 TJC 指令，不插队、不阻塞；屏幕 tm0 的 rev 刷新
+  会在约 1 s 内重绘。PC→屏幕约 0.2 s 下发完，屏幕下一次重绘可见。
+- 屏幕→PC 沿用 r11 既有“跟随屏幕”：UI 每 1 s 读 FRFQ，sequence/字段变化时回填整机页草稿；
+  编辑焦点期间暂停。
+- 任一侧 APPLY → 同一 PS 原子事务 → 屏幕草稿回写 + PC 状态回读，两侧数值一致。
+- 已核对 v10 活动组帧代码使用 `dr=crate`（bit/s）与 `a11=dpo*500`（0.5 dB 步进），
+  与固件草稿回写单位一致。
+
+**BOOT.BIN（已生成）**
+> 本节为 2026-11-02 当时的构建记录；加入 RDFQ/RDFA 后的新哈希、单 LOAD 布局
+> 与 UI exe 以 §28 为准。
+- 部署 `BOOT.BIN` = **人工 RF 联调版**（与 v3 相同 RF 权限 + DHCP + 屏幕草稿回写）：
+  `.auto/sdboot/BOOT_DHCP_MANUAL.BIN`，13,786,124 B，
+  SHA256 `13fe0be16275d818a4fb1d2529217c8d1cb90fcbe54cd4d0931fd34d94524fc7`。
+  组成：`fsbl_sd/fsbl.elf` + **`.auto/plbuild/system_sd.bit`** +
+  `.auto/plbuild/appbuild_dhcp_manual/P351_APP.elf`。app 单 LOAD
+  `0x100000`/`0x5C00C`，与 ELF 逐字节一致；FSBL/位流与 v3 逐字节一致。
+- 保护版保留 `P351/output/sdboot_deploy/BOOT_PROTECTED.BIN` =
+  `.auto/sdboot/BOOT_DHCP_v9.BIN`，13,781,964 B，
+  SHA256 `4adaec86225754f5474a043ec7f736ee6142529b56967445ddebde33e0ffac61`；
+  RF 软件许可 OFF（不能发射）。写卡时用 `-Image BOOT_PROTECTED.BIN`。
+- **重要更正**：二进制比对证明当前可用镜像 `BOOT_dhcp_lan.bin`（v3）内嵌的是重建位流
+  `system_sd.bit`（从 0x15770 起逐字节一致），不是 §25 所述“原机 system.bit”。
+  人工版与保护版的 FSBL/位流区域均与 v3 完全一致。
+- **双 LOAD 布局已核验（仅保护版 v9）**：其 app ELF 有两个文件型 LOAD
+  （text `0x100000`/`0x56F9C`，mmu/data `0x158000`/`0x400C`）。bootgen 将其写成两个分区
+  （镜像头 count=4）：app text 分区 `PartitionStart=0x332700` 字（=文件 `0xCC9C00`，
+  load `0x100000`），app data 分区 `PartitionStart=0x3482F0` 字（=文件 `0xD20BC0`，
+  load `0x158000`）。FSBL 的 `PartitionMove()` 按各分区 `LoadAddr` 分别搬运，
+  不是把两段拼接后整体加载；已对照 `fsbl_sd/image_mover.c` 确认。保护版在 text 后有
+  0x24 B 的 `0xFF` 对齐填充，data 结束即文件尾 `0xD24BCC`；text/data 与 ELF 逐字节一致。
+  人工版 v10 只有一个 LOAD，无此问题。
+- 回退镜像：`P351/output/sdboot_deploy/BOOT_SAFE_v3.BIN`（=BOOT_dhcp_lan.bin，板卡静态
+  192.168.1.2，已知可用）。写卡时留在卡根即可，只有 `BOOT.BIN` 会被 BootROM 读取。
+
+**上位机 r12（已打包并部署）**
+- `P351/output/ui/P351_Control_r12/P351_Control_r12.exe`（Python 3.10 + PyInstaller 6.22.3，
+  numpy/matplotlib/tkinter 与 r11 相同布局）。
+- `p351_discovery.py`：
+  - 自动探测**物理以太网 + Wi-Fi**（Windows 按名称排除 Hyper-V vEthernet、VMware、
+    Tailscale、Mihomo、蓝牙、本地连接*、VPN/TAP 等虚拟/隧道网卡；POSIX 同步放宽到无线）。
+  - 广播 DSCI 优先；默认候选增加 `169.254.1.2`，保留 `192.168.1.2`/`192.168.10.2` 兼容旧固件。
+  - 扫描预算 6 s；多网卡时先核验真实广播应答，再做候选兜底。
+- `p351_ui.py`：连续 5 次 FRFQ 无应答（非整机事务/写操作期间）→ 丢弃旧身份并自动重新发现；
+  适配 DHCP 续租/换址。整机页“跟随屏幕”逻辑不变。
+- `ad9361tx_ui.py`：`FIXED_BOARD_IP` 改为 169.254.1.2（仅作为发现候选/兜底，r11/r12 的
+  `_endpoint()` 仍使用 DSCI 实测地址；独立 AD9361 页控制不受影响）。
+
+**主机侧验证（无硬件）**
+- `.auto/dhcp_test/dhcp_test.exe`：DHCP 报文逐字段断言（广播 MAC/IP、校验和、magic、
+  option 53/50/54、OFFER→REQUEST、ACK 应用、T1 续租 ciaddr/源地址、错误 xid 忽略、
+  4 次无服务器回退 169.254.1.2/16）全部 PASS。
+- `p351_discovery.candidate_interfaces()` 在本机返回且仅返回 `以太网 192.168.1.111` 与
+  `WLAN 192.168.1.121`；VMware/vEthernet/Tailscale/Mihomo 均被排除。
+- r12 exe 启动冒烟 10 s 无崩溃、无 stderr 输出。
+
+**PC 有线网卡（唯一未自动完成的步骤）**
+- 当前会话无管理员权限，`以太网` 仍是静态 192.168.1.111/24。新方案不依赖该地址，
+  但按“改回 DHCP”的要求，请以管理员身份运行：
+  `powershell -ExecutionPolicy Bypass -File P351\output\tools\restore_ethernet_dhcp.ps1`
+  （脚本只改“以太网”，不动 WLAN/虚拟机网卡；改完可用 `check_network.ps1` 只读复核）。
+- 若直连板卡且无路由器，Windows 得到 169.254.x/16，板卡回退 169.254.1.2/16，仍可发现。
+
+**SD 卡部署（当前卡未插入电脑）**
+1. 断电取卡，插电脑；`powershell -ExecutionPolicy Bypass -File P351\output\tools\write_sd_boot.ps1 -Drive E`
+   （默认写人工 RF 联调版 `BOOT.BIN`；保护版加 `-Image BOOT_PROTECTED.BIN`。
+   脚本只接受可移动盘，自动备份旧 BOOT.BIN 并做 SHA256 校验）。
+2. 安全弹出，插回板卡，上电，等待约 15 s（DHCP 4×3 s + 链路协商）。
+3. 路由器 DHCP 客户端列表应出现 MAC `00:0A:35:00:00:02`，地址为 192.168.1.x；
+   若没有路由器，板卡回退 169.254.1.2。
+4. 打开 `P351/output/ui/P351_Control_r12/P351_Control_r12.exe`，约 1.2 s 后自动发现，
+   失败每 8 s 静默重试。首次运行如 Windows 防火墙弹窗，请允许“专用网络/公用网络”。
+   屏幕通讯不受 DHCP 影响（UART0 独立）。
+5. 回退：断电取卡，把 `BOOT_SAFE_v3.BIN` 复制为 `BOOT.BIN`；PC 有线网卡需恢复
+   192.168.1.111/24 才能发现静态 192.168.1.2 的旧板卡（旧镜像不支持 DHCP）。
+
+> **更新（见 §28）**：本节“仅事务成功才回写屏幕草稿”的描述已被 RDFQ/RDFA
+> 请求值同步取代；BOOT 哈希、单/双 LOAD 与 UI exe 信息也以 §28 为准。
+
+## 27. 核验：屏幕“未就绪”保护与 v10/r10 上位机连接方式（2026-11-02）
+
+**结论：当前 v9 没有解决屏幕“未就绪/不同步”问题，而且 v9 的 RF 权限与原机可用镜像不一致。**
+（“不同步”部分已在 §28 用 RDFQ/RDFA 请求值同步解决；本节保留当时的核验记录。）
+
+**v3 与原机已确认可控的组合**
+- 原机已知可用 `BOOT_dhcp_lan.bin`（v3）的 app 是**人工 RF 联调版**：
+  `[boot] P351-MANUAL-DIRECT-r10`，`P351_RF_HARDWARE_QUALIFIED=1`、`P351_MANUAL_RF_TEST=1`。
+  与 `output.zip/firmware/manual/P351_APP.elf` 仅差 1 字节（板卡 IP 192.168.10.2→192.168.1.2）。
+  因此 v3 允许 PC 独立 AD9361 页直接发射（内部 40 MHz、默认 89.75 dB、无自动发射）。
+- 新 v9 的 app 是**保护版**：`[boot] P351-OFFLINE-CANDIDATE`、`RF software permission OFF`，
+  `P351_RF_HARDWARE_QUALIFIED=0`、`P351_MANUAL_RF_TEST=0`。`p351_rf_route(1)` 直接拒绝，
+  所以 v9 会把原机可用的 PC 独立 AD9361 直发也一起关掉；这是必须修正的回归。
+- 已重建**人工 RF 联调版**（同 DHCP + 屏幕草稿回写）：
+  `.auto/plbuild/appbuild_dhcp_manual/P351_APP.elf`、
+  `.auto/sdboot/BOOT_DHCP_MANUAL.BIN`；部署为
+  `P351/output/sdboot_deploy/BOOT.BIN`（13,786,124 B，
+  SHA256 `13fe0be16275d818a4fb1d2529217c8d1cb90fcbe54cd4d0931fd34d94524fc7`）。
+  保护版保留为 `P351/output/sdboot_deploy/BOOT_PROTECTED.BIN`
+  （13,781,964 B，SHA256 `4adaec86225754f5474a043ec7f736ee6142529b56967445ddebde33e0ffac61`）。
+  FSBL/位流与 v3 逐字节一致；app 单 LOAD `0x100000`/`0x5C00C`，与 ELF 逐字节一致。
+
+**屏幕“未就绪”的根因（保护版和人工版都存在）**
+- `screen_up70_begin()`：`!P351_RF_HARDWARE_QUALIFIED`（保护版）或
+  `!p351_up70_power_plan()`（人工版）→ `SC_NOT_READY`。
+- 标定表为空：`P351_UP70_IF_RECORD_COUNT=0`、`P351_UP70_RF_RECORD_COUNT=0`；
+  `BOOT_PCM_FM_P351_POWER_CALIBRATED=0`、`P351_IF70_SOQ_POWER_CALIBRATED=0`。
+- 整机资格全 0：`P351_DRIVER_POWER_CALIBRATED=0`、
+  `P351_FINAL_COMMON_ATTENUATOR_VERIFIED=0`、`P351_FINAL_MANUAL_PATH=0`、
+  `P351_UPCONVERTER_VERIFIED=0` → `p351_tx_plan_blockers()` 非零。
+- 还需要外 10 MHz（`refclk_source_current==1`、`refclk_rate_current==10 MHz`）
+  和 TFS 状态 `0x300`。
+- 屏幕 t3 的 op14 被 `SC_NOT_READY=8` 拒绝后，tm0 置 `msg=8`，显示
+  “未就绪：请查询标定、参考及故障”（HMI 内 GBK 文本，3 处），并保留 `dirty=1`。
+- 固件 `screen_v2_service()` 只在 `rc==SC_OK` 调用 `screen_draft_sync_begin()`
+  （`screen_controller.inc` 429-430）；失败不回写草稿。PC 侧 FRFQ 只读板端实际状态。
+  所以拒绝时屏幕保留用户编辑值、PC 显示板端旧状态，两侧数值不一致——这是保护逻辑的结果。
+- 人工 RF 联调版只放开 PC 独立 AD9361 页，不会绕过上述屏幕最终 RF 检查；
+  屏幕仍会“未就绪”，仍不会自动同步。
+
+**原 r10/v10 上位机连接方式**
+- 原板卡静态 192.168.10.2（`output.zip/app_source/udp_stack.h`）。
+- 原 r10 P351 UI：UDP 40000 DSCI 广播→DSCA→CFGQ/CFGA V9；
+  `p351_discovery.DEFAULT_BOARD="192.168.10.2"`；只自动探测物理有线网卡；
+  PC 有线网卡需在 192.168.10.x（直连推荐 192.168.10.100/24）。
+- 原独立 AD9361 UI：固定 192.168.10.2，控制 UDP 40000、监视 UDP 40001；
+  无发现协议；PC 有线网卡同样需在 192.168.10.x。
+- `output.zip/firmware/manual/P351_APP.elf` + `firmware/system.bit` 才是原机已确认可控的
+  人工联调组合；`firmware/protected/BOOT.BIN` 是 RF OFF 的保护候选。
+- 当前 r12：DSCI 自动发现，候选 `169.254.1.2`/`192.168.1.2`/`192.168.10.2`，
+  扫以太网+Wi-Fi；要发现旧板 192.168.10.2，PC 需有 192.168.10.x 地址或路由。
+
+**待用户决策（安全相关）**
+- 屏幕最终 RF 路径要真正可用：
+  A. 完成功率/上变频标定，填 `p351_up70_calibration_data.h`，
+     设置 `P351_DRIVER_POWER_CALIBRATED`/`P351_FINAL_COMMON_ATTENUATOR_VERIFIED`/
+     `P351_FINAL_MANUAL_PATH`/`P351_UPCONVERTER_VERIFIED`，接外 10 MHz + TFS/上变频器，重编译；
+  B. 明确授权“仅台架”旁路（最大衰减、内部参考、跳过标定/TFS），屏幕 op14 才能成功并同步；
+     这不代表已验收的最终 RF，不能用于正式发射；
+  C. 保持保护，改用 PC 独立 AD9361 页做台架控制，屏幕最终 RF 页留待标定后使用。
+- 另可加“失败回写实际状态”的同步策略：op12/13/14 被拒后把板端实际值写回屏幕草稿并清 dirty，
+  使屏幕和 PC 显示同一旧状态；这会覆盖屏幕上的编辑值，需确认。
+  **实际采用 §28 的另一种策略**：失败时同步“刚提交的请求值”而非旧实际值，并明确标注
+  “板端未应用”；保护逻辑和“未发射”状态不变。
+
+---
+
+## 28. 附录：保护拒绝时的双向请求值同步（RDFQ/RDFA，2026-11-02 本会话）
+
+**目标**：即使最终 RF 保护拒绝发射，屏幕点“应用并发射”后 PC 整机页也显示屏幕刚改的值；
+反过来 PC 提交后屏幕也显示 PC 刚改的值。RF 保护本身不变，不发射、不伪造已应用状态。
+
+**固件（app_source，已重建两版）**
+- 新增“最近一次整机请求”只读快照（20 个 u32）：在 op12/13/14 进入执行器前记录原始参数，
+  与事务结果无关。字段为
+  `version,valid,sequence,op,result,dm,dr,dc,dfr,db,dn,di,dsl,dsh,dsx,dsb,df,dpo,reserved0,reserved1`，
+  单位与屏幕草稿一致（dr=bit/s，dpo=0.5 dB 步进，df=kHz）。
+- 新只读查询 **RDFQ+nonce → RDFA+nonce+20字**，与 FRFQ/FRFA 同一 UDP 40000；不访问 SPI、
+  不改变 RF/所有权。`result`：0=已应用，1=参数无效，2=忙，3=失败，4=执行中，5=超时，
+  6=已停止，7=序号错误，8=未就绪（保护/标定/参考）。
+- `screen_controller.inc`：
+  - `screen_request_capture()` 在 `screen_v2_execute()` 之前记录请求；
+    `screen_request_result_for()` 在立即返回、事务完成、STOP 时更新 result，按 sequence+op
+    匹配，避免旧事务误改新请求。
+  - 屏幕 UART 入口改用 `screen_v2_execute_capture()`；PC 的 `board_pc_final_rf_execute()`
+    也用同一包装。
+  - `screen_draft_sync_begin(c, committed)`：成功 committed=1 → `dirty=0`；
+    PC 发起但被拒绝 committed=0 → 写请求值且 `dirty=1`（屏幕仍显示未应用）；
+    屏幕发起但被拒绝不回写，保留屏幕自己的编辑值。
+  - PC 发起且 pending 的事务完成时，`rc==SC_OK || screen_async_pc` 都回写草稿；
+    因此 PC 被保护拒绝时，屏幕也能看到 PC 请求值。
+- `udp_stack.c`：RDFQ 加入 `udp_final_rf_guard` 的只读白名单（整机事务占用时仍可查）；
+  `udp_request_draft_reply()` 只读快照。
+- `final_rf_status.h`：`FINAL_RF_REQUEST_WORDS=20`、`FRQ_*` 枚举、
+  `board_final_rf_request_snapshot()`。
+
+**上位机 r12（已重建并部署）**
+- `p351_final_rf.py`：新增 `RequestedDraft`、`read_requested()`，严格校验 RDFA
+  长度/版本/保留字段/调制与组帧范围；旧固件不响应时返回 None。
+- `p351_ui.py`：FRFQ worker 同时读 RDFQ；`requested_rf_state` 随每轮轮询更新。
+- `p351_system_panel.py`：`sync_tick()` 优先用 RDFA（含被保护拒绝的请求），无 RDFA 时
+  回退 FRFA；新增 `backfill_from_requested()` 回填频率/功率/码率/调制/码型/帧/同步字/重复。
+  提示文本明确区分“已应用”和“板端未应用 · 未就绪（保护/标定/参考）”。PC 提交完成后
+  1.5 s 内暂停回填，避免上一笔旧请求短暂覆盖本页。
+- `p351_system_control.py`：去掉“板端 hardware_qualified=false 就不发 FRCM”的本地拒绝；
+  只核验 V9 身份/能力，让 PS 逐次判定保护。保护版仍拒绝 FRCM，不能发射。
+- exe：`P351/output/ui/P351_Control_r12/P351_Control_r12.exe`，
+  SHA256 `6178d03889b44685de65a8ce786af5b5fe7e30ea8431adae6b0f48149c339d08`；
+  上一版保留在 `P351/output/ui/P351_Control_r12_prev_rdfa_20261102/`。
+
+**BOOT 镜像（已回滚到 v3；UARTFIX 仅留档）**
+- 当前 `P351/output/sdboot_deploy/BOOT.BIN` = v3，13,818,896 B，
+  SHA256 `c4e7ef89a503746a70bcf92a2ddd49c44c1dbf35b1a88b2711edcb760501e1a1`，
+  与 `BOOT_SAFE_v3.BIN` 相同，已验证可被屏幕和上位机识别。
+- UARTFIX 尝试版保留为 `BOOT_ATTEMPT_UARTFIX_MANUAL.BIN`（`705bb858…`）和
+  `BOOT_ATTEMPT_UARTFIX_PROTECTED.BIN`（`0eeae369…`），仍无法启动，不得写卡。
+  §28 早先记录的 `65f1…`/`9750…` 两个镜像同样会在 main 第一条 printf 处挂死，
+  也不得使用。
+- UARTFIX 两版 app 只有一个文件型 LOAD：`0x100000` / `0x5C00C`，app 分区
+  `PartitionStart=0x332700` 字（文件 `0xCC9C00`），与各自的 ELF 逐字节一致。
+  §26/§27 所述“保护版双 LOAD”已被本次重建取代，两版均不再有 data 分区。
+- UARTFIX 的 FSBL（`0x1700`/`0x14014` B）与位流（`0x15740`/`0xCB44C0` B）仍与
+  `BOOT_SAFE_v3.BIN` 逐字节一致；只有 app 分区头长度/校验和不同。
+- 回退镜像 `BOOT_SAFE_v3.BIN` 不变（无 RDFQ）；旧固件配新 UI 时 RDFQ 超时，
+  PC 自动回退到 FRFA 原有行为。
+
+**主机侧验证（无硬件）**
+- RDFA 帧解析/回填：op14 `result=8` → PC 字段
+  `5137.0 MHz / -30.0 dBm / 4000000 bit/s / PCM/FM / NRZ-L / FE6B2840/32 / 512B×1 / 无限`；
+  op12 不覆盖频率/功率；空请求 valid=0；版本/保留字段错误被拒绝。
+- 两版固件均编译通过；ELF 含 `RDFQ`/`RDFA` 字符串与
+  `board_final_rf_request_snapshot` 符号；人工版仍为 `P351-MANUAL-DIRECT-r10`，
+  保护版仍为 `P351-OFFLINE-CANDIDATE` / `RF software permission OFF`。
+- 新 exe 启动冒烟 10 s 存活，无崩溃。
+- **未做硬件验证**：当前设备断电、SD 卡未插入；RDFQ 往返、屏幕草稿实际重绘、
+  “未就绪”下两侧数值一致需上电后确认。
+
+**边界**
+- RDFQ/RDFA 只表示“用户请求值”，不是已发射状态；FRFQ/FRFA 仍是唯一已应用状态。
+- 保护不变：无标定/外 10 MHz/TFS 时仍 `SC_NOT_READY`，不会因 RDFA 而发射。
+- op12 不携带最终 RF 频率/功率，PC 回填时保留原频率/功率字段。
+
+---
+
+## 29. 启动失败调查：控制台 stdout 指向不存在的 AXI UART Lite（2026-11-02）
+
+> **状态（2026-11-02 晚，重要）**：用户实测 UARTFIX 重建镜像仍然无法启动
+> （串口无消息、屏幕不认、上位机不发现）。因此 §29.1 的 `0xF8800000` 和
+> §29.2 的 IRQ VFP 都是已确认的构建缺陷，但**不是全部原因**；UARTFIX 镜像已从
+> SD 卡撤回，当前 SD 卡回滚到 v3（`BOOT_SAFE_v3.BIN`，`c4e7ef89…`）。
+> 后续必须改用 GCC 9.2.0/Vitis 2020.2 工具链重建，不要再用 GCC 12.3.1 + HSI BSP
+> 盲试；v3 是唯一已验证可识别的基线。
+
+### 29.1 现象与定位
+- 新工具链（xpack GCC 12.3.1 + HSI 2021.2 BSP）重建的 app 写入 SD 后：
+  调试串口 UART1 无任何输出、屏幕一直“等待板端确认/确认超时”、上位机发现不到板卡。
+  连“纯净 r10/v3 源码”用同一构建环境重建也完全一样，说明问题在构建环境，不在 RDFQ/DHCP 功能代码。
+- 静态比对原始 GCC 9.2.0 的已知可用 ELF 与新 ELF 的 `outbyte`：
+  - 原始：`mov r0,#0x1000; movt r0,#0xe000` → 写 **0xE0001000（PS UART1，调试口）**。
+  - 新构建：`mov r0,#0; movt r0,#0xf880` → 写 **0xF8800000（AXI UART Lite 地址）**。
+- `main()` 的第一条语句就是 `xil_printf("=== AD9361TX ... ===")`；该地址在本板
+  没有外设，CPU 在第一次写 UART 时就挂死，因此 UART1、屏幕 UART0、以太网/DHCP
+  全部没有机会初始化。三个“失联”现象同时出现，原因完全一致。
+- 错误值来自构建目录的 `xparameters.h`：
+  `STDIN_BASEADDRESS/STDOUT_BASEADDRESS = 0xF8800000`。这是其他工程/FSBL BSP
+  的控制台默认值，被误复制进了 app 构建目录；HSI 新生成的 app BSP 头文件本身是
+  `0xE0000000`（UART0），也不对，正确值应为 `0xE0001000`（UART1）。
+
+### 29.2 已做的修复与静态验证（足以解释第一版死机，但仍不足以启动）
+- 将 `appbuild_dhcp_manual/xparameters.h` 与 `appbuild_dhcp2/xparameters.h` 的
+  `STDIN/STDOUT_BASEADDRESS` 改为 `0xE0001000`。
+- 同时补 `-DFPU_HARD_FLOAT_ABI_ENABLED=1`：原 BSP 的 `asm_vectors.S` 因缺少该宏，
+  IRQ/FIQ 不保存 VFP 寄存器（`vpush {d0-d7}/{d16-d31}` 被条件编译掉），
+  与 app 的 hard-float ABI 不匹配，会在中断发生时破坏浮点状态。
+- 删除 `app_bsp/ps7_cortexa9_0/libsrc` 下全部 `.o` 和两个 app 构建目录的 app `.o`，
+  用 xpack GCC 12.3.1 全量重编，再 bootgen 重打镜像。
+- 验证：
+  - 两版 ELF 的 `outbyte` 均写 `0xE0001000`；
+  - 两版 `IRQHandler` 均含 `vpush {d0-d7}` / `vpush {d16-d31}` 及 FPSCR/FPEXC 保存恢复；
+  - 入口 `0x100000`、app LOAD `0x5C00C` 不变；
+  - `BOOT.BIN` 前 `0xCC9C00` 字节（FSBL+位流+分区头）与旧镜像逐字节一致；
+  - app 分区与各自 ELF 的首个 LOAD 段逐字节一致。
+- 硬件结果：上述镜像仍无法启动，说明 GCC 12.3.1/HSI BSP 与原始
+  GCC 9.2.0/Vitis BSP 之间还有其它差异（启动代码、库、ABI 或初始化顺序）。
+- UARTFIX 尝试镜像哈希（仅留档，**不得写卡**）：
+  - `BOOT_ATTEMPT_UARTFIX_MANUAL.BIN` `705bb858…8662d`
+  - `BOOT_ATTEMPT_UARTFIX_PROTECTED.BIN` `0eeae369…2d989`
+
+### 29.3 上电验收顺序
+1. 调试 UART1：JM1 pin37 = W29 = `IO_L17P_12`（板端 TX）接 USB-TTL RX；
+   pin39 = W30（RX）；pin33/35 = GND；115200 8N1。上电约 1 s 应出现启动横幅。
+2. 屏幕 UART0：pin17 = AJ28 = `IO_L21P_T3_DQS_12` 为板端 TX，pin18 = AB29 为 RX；
+   不要在 UART1 无输出时把 USB-TTL 接到这里排查。
+3. 屏幕应结束“等待板端确认”，进入正常页面并返回“操作完成”。
+4. 上位机：v3 固定 192.168.1.2，PC 有线网卡当前 192.168.1.111/24 可直接发现；
+   只有测试 DHCP 版时才需要路由器 DHCP，直连 PC 则 PC 网卡必须自动获取
+   （板卡回退 169.254.1.2/16 后才能互通）。
+5. 在保护仍拒绝发射的前提下验证 RDFQ/RDFA 双向回填：屏幕“应用并发射”被拒绝后，
+   PC 整机页应显示屏幕请求值并标注“板端未应用 · 未就绪”；反向亦然，且不发射。
+   该功能只在 UARTFIX/后续新功能镜像中存在，v3 没有 RDFQ。
+
+### 29.4 当前部署状态
+- SD 卡已回滚到 v3（`BOOT.BIN` = `BOOT_SAFE_v3.BIN`，
+  SHA256 `c4e7ef89a503746a70bcf92a2ddd49c44c1dbf35b1a88b2711edcb760501e1a1`），
+  并通过 SHA256 校验；插入板卡上电即可恢复屏幕和上位机识别。
+- UARTFIX 两版保留在 `P351/output/sdboot_deploy/`：
+  `BOOT_ATTEMPT_UARTFIX_MANUAL.BIN` / `BOOT_ATTEMPT_UARTFIX_PROTECTED.BIN`，
+  仅作尝试记录，**不得写卡**，除非明确继续调试。
+- 串口采集脚本：`P351/output/tools/serial_capture.ps1`（默认 COM15/115200/20 s，
+  日志写 `P351/output/logs/`）。
+- 下一步：用 GCC 9.2.0/Vitis 2020.2 或可复现的 9.2.x 工具链重建 BSP+app，
+  先在 v3 源码上做最小启动验证，再叠加 DHCP/RDFQ；不要再直接部署 GCC 12 构建。
+- 2026-11-02 15:40 更新：GCC 9.2.1 功能镜像已构建并写入 SD 卡，详见 §30；
+  §29.4 上面“卡内为 v3”的状态已被 §30.5 取代。
+
+---
+
+## 30. GCC 9.2.1 重建：功能镜像与纯净 v3 对照（2026-11-02）
+
+### 30.1 工具链与 ABI
+- 使用 xpack `arm-none-eabi-gcc 9.2.1`，路径
+  `.auto/toolchains/xpack-arm-none-eabi-gcc-9.2.1-1.1/`。
+- 该工具链没有 hard-float multilib（`-print-multi-directory` 返回 `.`），
+  首次 hard-float 链接报 `P351_APP.elf uses VFP register arguments, libc.a does not`。
+  因此 BSP 和 app 全部改用 `-mfloat-abi=softfp -mfpu=vfpv3` 重编：
+  - 编译宏：`-DP351_RF_HARDWARE_QUALIFIED=1 -DP351_MANUAL_RF_TEST=1`
+    `-DFPU_HARD_FLOAT_ABI_ENABLED=1`；
+  - `FPU_HARD_FLOAT_ABI_ENABLED=1` 保证 `asm_vectors.S` 在 IRQ/FIQ 保存
+    VFP（softfp 代码仍会执行 VFP 指令，必须保存）。
+- BSP 仍是 HSI 2021.2 的 `standalone_v7_6` + axidma_v9_1 / emacps_v3_15 /
+  gpiops_v3_5 / scugic_v4_6 / uartps_v3_11，不是原始 `standalone_v7_3`；
+  但 `_boot` 指令已与原始 GCC 9.2.0 ELF 逐字节比对一致。
+
+### 30.2 两个 ELF 与 BOOT 镜像
+- 功能版源码：`P351/output/app_source/`（DHCP + RDFQ/RDFA + 屏幕草稿回写），
+  构建目录 `.auto/plbuild/appbuild_gcc921/`，ELF 1,234,072 B；
+  以与原厂已知可用 app 相同的 `-O0 -g3` 编译，text 464,828 / data 15,798 /
+  bss 5,093,872；入口 0x100000；单文件 LOAD `0x10000/0x7800C`。
+  先前 `-O2` 版（text 343,144）已移到 `.auto/sdboot/failed_tests/` 留档，
+  不作为写卡版本；改用 -O0 是为了先排除优化级别差异。
+- 纯净对照：v3 源码 + 同一 BSP/工具链，构建目录
+  `.auto/plbuild/appbuild_gcc921_v3src/`，ELF 1,202,884 B；
+  text 454,332 / data 15,718 / bss 5,093,744；单 LOAD `0x10000/0x7400C`。
+- BOOT 镜像：
+  - `P351/output/sdboot_deploy/BOOT_GCC921_MANUAL.BIN`，
+    13,900,812 B，SHA256
+    `1d4fdd9175f14e9ffaf5901607f3308cfa1174312db5f8c17b7f2b5fd1123070`；
+  - `P351/output/sdboot_deploy/BOOT_GCC921_V3SRC_CONTROL.BIN`，
+    13,884,428 B，SHA256
+    `16ae4c729e8a1e841446b4b47505ee7648d5e65f0ab7b8bf646708af2f9b5e08`。
+- 两镜像的 app 分区都在文件偏移 `0xCC9C00`，长度分别 `0x1E003` / `0x1D003` 字，
+  与各自 ELF 首个 LOAD 逐字节一致；FSBL 与位流沿用 v3，前缀只有 app 分区
+  长度/校验和 5 个字节不同。
+
+### 30.3 静态核对（未上电）
+- 功能 ELF：`outbyte` 写 `0xE0001000`（UART1）；`IRQHandler` 含
+  `vpush {d0-d7}` / `vpush {d16-d31}` 及 FPSCR/FPEXC 保存恢复；
+  `_boot`（0x10012c 起）与原始 ELF 完全一致；`main` 在 0x1337cc。
+- ELF 含 `RDFQ` / `RDFA` 字符串；`board_final_rf_request_snapshot` 等符号存在。
+- 功能 ELF 的 `.init_array` 指向 `register_fini`，`__libc_init_array` 正常；
+  入口向量 `_vector_table` → `_boot` → `_start` 路径与原始一致。
+- 为区分“镜像没启动”与“启动后 AD9361/DMA 初始化失败”，新增
+  `screen_uart0_boot_message()`：banner 之后立即 `screen_uart0_init()` 并直接
+  用 `XUartPs_SendByte` 向屏幕当前页发 `xstr`，不依赖 v2 握手。正常启动显示
+  `P351: BOOT OK`，随后按顺序覆盖显示 `board init` → `SPI init` →
+  `AD9361 init` → `AD9361 ok` → `LVDS cal` → `LVDS ok` → `DMA RX` →
+  `GIC init` → `DMA TX` → `DMA ok` → `NET init` → `NET ok` → `LOOP`。
+  停在哪一条就是该阶段未返回；`tx_boot_fail()` 会把失败阶段名显示出来并
+  保持 RF OFF。该诊断只写 UART0，不写业务变量、不改变 RF/所有权。
+- 结论：只差“镜像能否被 FSBL 正确加载并运行”的硬件验证，代码启动路径
+  已没有 GCC 12 那两个已知缺陷。
+
+### 30.4 为什么 v3 上“不同步”是必然
+- v3 没有 RDFQ/RDFA，也没有 PC 请求写屏幕草稿；r12 读 RDFQ 超时后回退
+  FRFA，只能显示已应用状态。屏幕也只显示已提交状态。
+- 屏幕“未就绪：请查询标定、参考及故障”是最终 RF 保护：标定表为空、
+  整机资格为 0、需要外 10 MHz 与 TFS 0x300；保护拒绝时不发射。
+- 因此“任何一端修改另一端同步”必须用功能镜像验证；v3 只能作为回退。
+
+### 30.5 当前 SD 卡与测试步骤
+- 2026-11-02 15:47：已把卡内旧 `BOOT_OLD_*` 备份到
+  `.auto/sdcard_backup_20261102/` 后删除，重新连续写入 -O0 阶段诊断镜像：
+  - 卡内 `E:\BOOT.BIN` 当时为 `425b39d7…`（阶段诊断版），13,900,812 B；
+  - `E:\BOOT_SAFE_v3.BIN` = C4E7…，13,818,896 B。
+- 2026-11-02 16:19：现场屏幕停在 `P351: DMA TX FAILED`，已定位并修复
+  BSP 的 AXI DMA TX 配置缺失，重建镜像
+  `1d4fdd91…`（详见 §30.6）。该镜像已写入 SD 卡并刷新缓存，
+  等待上电验收。
+- 上电验收：
+  1. 卡插回板卡，上电等待约 15 s；屏幕应结束“等待板端确认”，
+     上位机 r12 应自动发现。
+  2. 先只读观察：屏幕显示正常、PC 能连上，不提交任何整机发射。
+  3. 屏幕改参数 → “应用并发射”：预期仍“未就绪”，PC 整机页在下一轮
+     轮询后显示屏幕请求值并标注“板端未应用 · 未就绪”，不发射。
+  4. PC 改整机页 → 提交：预期仍被拒，屏幕草稿变量在 1~2 s 内重绘为
+     PC 请求值并保留未应用提示，不发射。
+  5. 若屏幕或 PC 任一失联：先用板载 USB2 Type-C 的 UART1 COM 口或
+     W29/pin37 抓横幅，再判断停在哪个阶段。
+
+### 30.6 DMA TX 失败根因与修复（2026-11-02）
+- 现象：屏幕阶段诊断停在 `P351: DMA TX FAILED`，main 打印
+  `[txbit] init failed; RF remains muted` 后死循环。
+- 根因：HSI 2021.2 生成的
+  `.auto/plbuild/app_bsp/ps7_cortexa9_0/libsrc/axidma_v9_1/src/xaxidma_g.c`
+  只有 RX 实例（DeviceId 0 / 0x40400000），没有 TX 实例
+  （DeviceId 1 / 0x40410000）。`dma_tx_bit_init()` 第一步
+  `XAxiDma_LookupConfig(1)` 返回 NULL，直接 `XST_FAILURE`。
+  这与 RDFQ/DHCP/屏幕同步代码无关，纯净 v3 对照也会同样失败。
+- 修复：按原始 GCC 9.2.0 已知可用 ELF 里的 `XAxiDma_ConfigTable`
+  （136 B，两个 68 B 表项）恢复：
+  - RX：0x40400000，S2MM，Mm2sWidth=32，S2mmWidth=64，burst=16，SG=26；
+  - TX：0x40410000，MM2S，Mm2sWidth=64，S2mmWidth=32，burst=16，SG=26。
+  HSI 生成的 RX 表项 burst=64 / SG=14 与实际 v3 位流不符，一并改回。
+- 验证：新 ELF 的 `XAxiDma_ConfigTable` 大小为 0x88（2 项），
+  `XAxiDma_LookupConfig(1)` 能命中 0x40410000；boot 镜像 app 分区
+  0xCC9C00/0x7800C 与 ELF 逐字节一致，分区头和校验和通过。
+- 新镜像：`1d4fdd9175f14e9ffaf5901607f3308cfa1174312db5f8c17b7f2b5fd1123070`。
+- 待办：上电确认阶段诊断能走到 `NET ok` / `LOOP`，
+  然后验证屏幕与上位机识别及 RDFQ/RDFA 双向回填。
+- BSP 修复已作为可重放的补丁入库：
+  `P351/output/firmware/bsp_patches/`（`xaxidma_g.c` + 应用脚本 + README）。
+  BSP 重新生成后不应用该补丁，DMA TX 会再次失败。
+- 若功能镜像不能启动：写 `BOOT_GCC921_V3SRC_CONTROL.BIN` 对照。
+  对照能启动 → 构建链可用，问题在功能代码；对照也不能启动 → 仍需原版
+  GCC 9.2.0 + standalone_v7_3 或改用原始 app 二进制补丁方案。
+- 屏幕工程：当前设备上仍是 v10.tft（v11 只生成了 .HMI，未编译/下载）。
+  v10 的 t3 已经发送 op14 精确码率帧，p1 也直接显示 dm/dr/df/dpo 草稿，
+  因此“PC 请求回写屏幕”在 v10 上应可见；v11 只优化重绘速度与轮询，
+  不是同步功能的前提。
+
